@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Questy.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,10 @@ namespace Questy.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(connectionString: connectionString);
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserTypePermissions>().HasKey(utp => new { utp.UserTypeID, utp.PermissionID });
         }
     }
 }
