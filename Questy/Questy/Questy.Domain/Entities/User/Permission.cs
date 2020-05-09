@@ -8,11 +8,11 @@ namespace Questy.Domain.Entities
     {
         public Permission()
         {
-            UserTypes = new List<UserType>();
+            UserTypes = new List<UserTypePermissions>();
         }
         public int ID { get; set; }
         public string Description { get; set; }
-        public List<UserType> UserTypes { get; set; }
+        public List<UserTypePermissions> UserTypes { get; set; }
         public bool isActive { get; set; }
         public string AuditUser { get; set; }
         public DateTime LastUpdated { get; set; }
