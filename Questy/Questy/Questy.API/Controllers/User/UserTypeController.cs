@@ -22,11 +22,28 @@ namespace Questy.API.Controllers
         }
 
         [HttpPost]
-        public UserType Add([FromBody] UserType userType)
+        public bool Add([FromBody] UserType userType)
         {
+            var result = false;
             context.UserTypes.Add(userType);
-            context.SaveChanges();
-            return userType;
+            if (context.SaveChanges() > 0)
+            {
+                result = true;
+            }
+            return result;
+        }
+
+        [HttpPost]
+        [Route("/Delete")]
+        public bool Delete([FromBody] UserType userType)
+        {
+            var result = false;
+            context.UserTypes.Remove(userType);
+            if (context.SaveChanges() > 0)
+            {
+                result = true;
+            }
+            return result;
         }
     }
 }
