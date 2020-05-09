@@ -22,11 +22,15 @@ namespace Questy.API.Controllers
         }
 
         [HttpPost]
-        public User Add([FromBody] User user)
+        public bool Add([FromBody] User user)
         {
+            var result = false;
             context.Users.Add(user);
-            context.SaveChanges();
-            return user;
+            if (context.SaveChanges() > 0)
+            {
+                result = true;
+            }
+            return result;
         }
 
     }
