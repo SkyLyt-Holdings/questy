@@ -13,20 +13,20 @@ namespace Questy.API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private static QuestyContext context = new QuestyContext();
+        private static QuestyContext _context = new QuestyContext();
 
         [HttpGet]
         public List<User> GetAll()
         {
-            return context.Users.ToList();
+            return _context.Users.ToList();
         }
 
         [HttpPost]
         public bool Add([FromBody] User user)
         {
             var result = false;
-            context.Users.Add(user);
-            if (context.SaveChanges() > 0)
+            _context.Users.Add(user);
+            if (_context.SaveChanges() > 0)
             {
                 result = true;
             }

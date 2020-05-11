@@ -10,7 +10,7 @@ namespace Questy.Tests.Domain.User
 {   
     public class UserTypeTests
     {
-        private static QuestyContext context = new QuestyContext();
+        private static QuestyContext _context = new QuestyContext();
 
         [Fact]
         public void CanAddUserType()
@@ -19,10 +19,10 @@ namespace Questy.Tests.Domain.User
             var userType = new UserType { Description = "Test" };
 
             // Act
-            context.UserTypes.Add(userType);
+            _context.UserTypes.Add(userType);
             
             // Assert
-            Assert.True(context.SaveChanges() > 0);
+            Assert.True(_context.SaveChanges() > 0);
         }
 
         [Fact]
@@ -30,14 +30,14 @@ namespace Questy.Tests.Domain.User
         {
             // Arrange
             var result = true;
-            var userType = context.UserTypes
+            var userType = _context.UserTypes
                 .Where(ut => ut.Description == "Test").FirstOrDefault();
 
             // Act            
             if(userType != null)
             {
-                context.UserTypes.Remove(userType);
-                result = context.SaveChanges() > 0;
+                _context.UserTypes.Remove(userType);
+                result = _context.SaveChanges() > 0;
             }            
             
             // Assert

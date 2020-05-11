@@ -19,7 +19,7 @@ namespace Questy.API
     public class Startup
     {
         //Ensure Database is already created
-        private static QuestyContext context = new QuestyContext();
+        private static QuestyContext _context = new QuestyContext();
 
         public Startup(IConfiguration configuration)
         {
@@ -76,20 +76,21 @@ namespace Questy.API
 
         private void BuildDefaultDB()
         {
-           if (context.Database.EnsureCreated())
+            if (_context.Database.EnsureCreated())
             {
-                List<UserType> userTypes = new List<UserType>{ 
+                SetUpDefaultData();
+            }
+        }
+
+        private static void SetUpDefaultData()
+        {
+            List<UserType> userTypes = new List<UserType>{
                     new UserType { Description = "End User" },
                     new UserType { Description = "Admin" }};
 
+            _context.UserTypes.AddRange(userTypes);
 
-                foreach (var type in userTypes)
-                {
-                    context.UserTypes.Add(type);
-                }
-
-                context.SaveChanges();
-            }
+            _context.SaveChanges();
         }
     }
 }
