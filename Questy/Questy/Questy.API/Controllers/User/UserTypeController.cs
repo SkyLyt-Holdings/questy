@@ -13,20 +13,20 @@ namespace Questy.API.Controllers
     [ApiController]
     public class UserTypeController : ControllerBase
     {
-        private static QuestyContext context = new QuestyContext();
+        private static QuestyContext _context = new QuestyContext();
 
         [HttpGet]
         public List<UserType> GetAll()
         {
-            return context.UserTypes.ToList();
+            return _context.UserTypes.ToList();
         }
 
         [HttpPost]
         public bool Add([FromBody] UserType userType)
         {
             var result = false;
-            context.UserTypes.Add(userType);
-            if (context.SaveChanges() > 0)
+            _context.UserTypes.Add(userType);
+            if (_context.SaveChanges() > 0)
             {
                 result = true;
             }
@@ -38,8 +38,8 @@ namespace Questy.API.Controllers
         public bool Delete([FromBody] UserType userType)
         {
             var result = false;
-            context.UserTypes.Remove(userType);
-            if (context.SaveChanges() > 0)
+            _context.UserTypes.Remove(userType);
+            if (_context.SaveChanges() > 0)
             {
                 result = true;
             }

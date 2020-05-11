@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Logging;
 using Questy.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,11 @@ namespace Questy.Data
         public DbSet<User> Users { get; set; }
         public DbSet<UserType> UserTypes { get; set; }
         public DbSet<Permission> Permissions { get; set; }
-    
+        public DbSet<Archetype> Archetypes { get; set; }
+        public DbSet<Weight> Weights { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<UserBuild> UserBuilds { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
