@@ -19,6 +19,7 @@ namespace Questy.Data
         public DbSet<Weight> Weights { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<UserBuild> UserBuilds { get; set; }
+        public DbSet<Quest> Quests { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

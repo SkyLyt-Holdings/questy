@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Questy.Domain\Questy.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Scripts\" />
+  </ItemGroup>
+
 </Project>

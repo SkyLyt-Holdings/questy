@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Questy.Data;
 
 namespace Questy.Data.Migrations
 {
     [DbContext(typeof(QuestyContext))]
-    partial class QuestyContextModelSnapshot : ModelSnapshot
+    [Migration("20200513223430_quest-9")]
+    partial class quest9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,7 +155,7 @@ namespace Questy.Data.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserTypeID")
+                    b.Property<int?>("UserTypeID")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
@@ -289,9 +291,7 @@ namespace Questy.Data.Migrations
                 {
                     b.HasOne("Questy.Domain.Entities.UserType", "UserType")
                         .WithMany()
-                        .HasForeignKey("UserTypeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserTypeID");
                 });
 
             modelBuilder.Entity("Questy.Domain.Entities.UserBuild", b =>
