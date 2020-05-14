@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Questy.Domain.Entities
 {
-    public class UserTypePermissions
+    public class UserTypePermission
     {
         public int UserTypeID { get; set; }
         public int PermissionID { get; set; }

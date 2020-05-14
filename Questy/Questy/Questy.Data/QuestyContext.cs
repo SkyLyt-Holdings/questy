@@ -28,7 +28,7 @@ namespace Questy.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserTypePermissions>().HasKey(utp => new { utp.UserTypeID, utp.PermissionID });
+            modelBuilder.Entity<UserTypePermission>().HasKey(utp => new { utp.UserTypeID, utp.PermissionID });
         }
     }
 }
