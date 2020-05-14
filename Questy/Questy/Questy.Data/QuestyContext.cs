@@ -10,7 +10,11 @@ namespace Questy.Data
 {
     public class QuestyContext : DbContext
     {
-        private string connectionString = "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Questy_DEV";
+        public QuestyContext(DbContextOptions<QuestyContext> options)
+            :base(options)
+        {
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        }
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserType> UserTypes { get; set; }
@@ -21,11 +25,6 @@ namespace Questy.Data
         public DbSet<UserBuild> UserBuilds { get; set; }
         public DbSet<Quest> Quests { get; set; }
 
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(connectionString: connectionString);
-        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserTypePermission>().HasKey(utp => new { utp.UserTypeID, utp.PermissionID });
