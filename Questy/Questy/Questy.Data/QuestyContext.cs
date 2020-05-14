@@ -10,6 +10,10 @@ namespace Questy.Data
 {
     public class QuestyContext : DbContext
     {
+        public QuestyContext()
+        {
+        }
+
         public QuestyContext(DbContextOptions<QuestyContext> options)
             :base(options)
         {
