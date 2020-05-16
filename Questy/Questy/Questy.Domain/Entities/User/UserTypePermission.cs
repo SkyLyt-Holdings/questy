@@ -6,6 +6,7 @@ namespace Questy.Domain.Entities
 {
     public class UserTypePermission
     {
+        public int ID { get; set; }
         public int UserTypeID { get; set; }
         public int PermissionID { get; set; }
         public UserType UserType { get; set; }

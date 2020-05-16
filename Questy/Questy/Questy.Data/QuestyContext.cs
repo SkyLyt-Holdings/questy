@@ -41,10 +41,5 @@ namespace Questy.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<UserBuild> UserBuilds { get; set; }
         public DbSet<Quest> Quests { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<UserTypePermission>().HasKey(utp => new { utp.UserTypeID, utp.PermissionID });
-        }
     }
 }

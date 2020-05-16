@@ -11,5 +11,7 @@ namespace Questy.Domain.Entities
         public int TagID { get; set; }
         public Archetype Archetype { get; set; }
         public Tag Tag { get; set; }
+        public string AuditUser { get; set; }
+        public DateTime LastUpdated { get; set; }
     }
 }
