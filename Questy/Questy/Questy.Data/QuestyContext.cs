@@ -14,23 +14,10 @@ namespace Questy.Data
         {
         }
 
-        public QuestyContext(DbContextOptions options)
-            :base(options)
-        { }
-
         public QuestyContext(DbContextOptions<QuestyContext> options)
             :base(options)
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;         
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder
-                    .UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Questy_AutomatedTest");
-            }          
         }
 
         public DbSet<User> Users { get; set; }
