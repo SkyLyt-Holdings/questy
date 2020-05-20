@@ -20,11 +20,6 @@ namespace Questy.Data
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;         
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            
-        }
-
         public DbSet<User> Users { get; set; }
         public DbSet<UserType> UserTypes { get; set; }
         public DbSet<Permission> Permissions { get; set; }

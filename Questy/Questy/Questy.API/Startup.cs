@@ -19,6 +19,8 @@ namespace Questy.API
 {
     public class Startup
     {
+        private DbContext _context = new QuestyContext();
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;

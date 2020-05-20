@@ -16,7 +16,7 @@ namespace Questy.Tests.Domain.User
         public void CanInsertUserType()
         {
             //Arrange
-            var builder = new DbContextOptionsBuilder();
+            var builder = new DbContextOptionsBuilder<QuestyContext>();
             builder.UseInMemoryDatabase("CanInsertUserType");
 
             //Act
