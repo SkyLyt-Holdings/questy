@@ -6,14 +6,12 @@ using System.Text;
 
 namespace Questy.Domain.Entities
 {
-    public class Quest
+    public class Quest : Entity
     {
         public Quest()
         {
             Tags = new List<QuestTag>();
         }
-
-        public int ID { get; set; }
 
         [Required]
         [Column(TypeName = "nvarchar(50)")]
@@ -30,14 +28,5 @@ namespace Questy.Domain.Entities
         public DateTime? EndDate { get; set; }
         
         public List<QuestTag> Tags { get; set; }
-
-        [Required]
-        [Column(TypeName = "nvarchar(256)")]
-        public string AuditUser { get; set; }
-
-        [Required]
-        [Column(TypeName = "datetime2")]
-        public DateTime LastUpdated { get; set; }
-
     }
 }

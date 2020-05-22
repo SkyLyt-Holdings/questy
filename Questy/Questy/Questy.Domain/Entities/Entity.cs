@@ -6,15 +6,16 @@ using System.Text;
 
 namespace Questy.Domain.Entities
 {
-    public class Weight : Entity
+    public class Entity : IEntity
     {
-        [Required]
-        public int PrimaryPercentage { get; set; }
+        public int ID { get; set; }
 
         [Required]
-        public int SecondaryPercentage { get; set; }
+        [Column(TypeName = "nvarchar(256)")]
+        public string AuditUser { get; set; }
 
         [Required]
-        public int TertiaryPercentage { get; set; }
+        [Column(TypeName = "datetime2")]
+        public DateTime LastUpdated { get; set; }
     }
 }

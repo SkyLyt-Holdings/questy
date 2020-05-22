@@ -6,10 +6,8 @@ using System.Text;
 
 namespace Questy.Domain.Entities
 {
-    public class QuestTag
+    public class QuestTag : Entity
     {
-        public int ID { get; set; }
-
         public int QuestID { get; set; }
         
         public int TagID { get; set; }
@@ -17,13 +15,5 @@ namespace Questy.Domain.Entities
         public Quest Archetype { get; set; }
         
         public Tag Tag { get; set; }
-
-        [Required]
-        [Column(TypeName = "nvarchar(256)")]
-        public string AuditUser { get; set; }
-
-        [Required]
-        [Column(TypeName = "datetime2")]
-        public DateTime LastUpdated { get; set; }
     }
 }
