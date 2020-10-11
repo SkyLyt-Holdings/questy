@@ -6,15 +6,13 @@ using System.Text;
 
 namespace Questy.Domain.Entities
 {
-    public class Permission
+    public class Permission : Entity
     {
         public Permission()
         {
             UserTypes = new List<UserTypePermission>();
         }
-        
-        public int ID { get; set; }
-        
+
         [Required]
         [Column(TypeName = "nvarchar(50)")]
         public string Description { get; set; }
@@ -22,13 +20,5 @@ namespace Questy.Domain.Entities
         public List<UserTypePermission> UserTypes { get; set; }
         
         public bool isActive { get; set; }
-
-        [Required]
-        [Column(TypeName = "nvarchar(256)")]
-        public string AuditUser { get; set; }
-
-        [Required]
-        [Column(TypeName = "datetime2")]
-        public DateTime LastUpdated { get; set; }
     }
 }
