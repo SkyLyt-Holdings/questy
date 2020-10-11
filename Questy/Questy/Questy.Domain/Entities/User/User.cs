@@ -8,8 +8,11 @@ namespace Questy.Domain.Entities
 {
     public class User : Entity
     {
-        [Required]
-        [Column(TypeName = "nvarchar(256)")]
+        public User()
+        {
+            QuestLog = new List<QuestLog>();
+        }
+        public int ID { get; set; }
         public string Username { get; set; }
         
         [Required]
@@ -23,7 +26,7 @@ namespace Questy.Domain.Entities
         public int UserTypeID { get; set; }
         
         public UserType UserType { get; set; }
-        
+        public List<QuestLog> QuestLog { get; set; }
         public bool isActive { get; set; }
     }
 }

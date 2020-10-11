@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Questy.Data;
 
 namespace Questy.Data.Migrations
 {
     [DbContext(typeof(QuestyContext))]
-    partial class QuestyContextModelSnapshot : ModelSnapshot
+    [Migration("20200520211709_quest-15")]
+    partial class quest15
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,12 +29,10 @@ namespace Questy.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AuditUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
@@ -53,8 +53,7 @@ namespace Questy.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("AuditUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
@@ -79,12 +78,10 @@ namespace Questy.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AuditUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
@@ -105,12 +102,10 @@ namespace Questy.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AuditUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
@@ -120,10 +115,6 @@ namespace Questy.Data.Migrations
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("ID");
 
@@ -169,8 +160,7 @@ namespace Questy.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AuditUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
@@ -198,12 +188,10 @@ namespace Questy.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AuditUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
@@ -221,26 +209,22 @@ namespace Questy.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AuditUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserTypeID")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("isActive")
                         .HasColumnType("bit");
@@ -259,28 +243,31 @@ namespace Questy.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ArchetypeID")
-                        .HasColumnType("int");
-
                     b.Property<string>("AuditUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserID")
+                    b.Property<int?>("PrimaryArchetypeID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SecondaryArchetypeID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TertiaryArchetypeID")
                         .HasColumnType("int");
 
                     b.Property<int?>("WeightID")
                         .HasColumnType("int");
 
-                    b.Property<int>("WeightPercentage")
-                        .HasColumnType("int");
-
                     b.HasKey("ID");
 
-                    b.HasIndex("ArchetypeID");
+                    b.HasIndex("PrimaryArchetypeID");
+
+                    b.HasIndex("SecondaryArchetypeID");
+
+                    b.HasIndex("TertiaryArchetypeID");
 
                     b.HasIndex("WeightID");
 
@@ -295,12 +282,10 @@ namespace Questy.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AuditUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
@@ -316,13 +301,6 @@ namespace Questy.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AuditUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("PermissionID")
                         .HasColumnType("int");
@@ -347,8 +325,7 @@ namespace Questy.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AuditUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
@@ -423,11 +400,17 @@ namespace Questy.Data.Migrations
 
             modelBuilder.Entity("Questy.Domain.Entities.UserBuild", b =>
                 {
-                    b.HasOne("Questy.Domain.Entities.Archetype", "Archetype")
+                    b.HasOne("Questy.Domain.Entities.Archetype", "PrimaryArchetype")
                         .WithMany()
-                        .HasForeignKey("ArchetypeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PrimaryArchetypeID");
+
+                    b.HasOne("Questy.Domain.Entities.Archetype", "SecondaryArchetype")
+                        .WithMany()
+                        .HasForeignKey("SecondaryArchetypeID");
+
+                    b.HasOne("Questy.Domain.Entities.Archetype", "TertiaryArchetype")
+                        .WithMany()
+                        .HasForeignKey("TertiaryArchetypeID");
 
                     b.HasOne("Questy.Domain.Entities.Weight", "Weight")
                         .WithMany()
