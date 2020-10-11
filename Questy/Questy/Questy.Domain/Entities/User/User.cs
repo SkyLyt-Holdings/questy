@@ -12,7 +12,7 @@ namespace Questy.Domain.Entities
         {
             QuestLog = new List<QuestLog>();
         }
-        public int ID { get; set; }
+
         public string Username { get; set; }
         
         [Required]

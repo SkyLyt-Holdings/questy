@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Questy.Tests", "Questy.Tests\Questy.Tests.csproj", "{E06B8845-2AE7-4152-892E-4D565F0C375C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Questy.Tests", "Questy.Tests\Questy.Tests.csproj", "{E06B8845-2AE7-4152-892E-4D565F0C375C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Questy.Data", "Questy.Data\Questy.Data.csproj", "{3E54014F-E872-4932-A9D6-7AEFDECA266A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Questy.Data", "Questy.Data\Questy.Data.csproj", "{3E54014F-E872-4932-A9D6-7AEFDECA266A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Questy.Domain", "Questy.Domain\Questy.Domain.csproj", "{E02C4C39-C7D1-4E24-B408-F3EB54DCBE62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Questy.Domain", "Questy.Domain\Questy.Domain.csproj", "{E02C4C39-C7D1-4E24-B408-F3EB54DCBE62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Questy.API", "Questy.API\Questy.API.csproj", "{0069F6D6-1202-4EB9-9F2E-7F6BE0FB914E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Questy.API", "Questy.API\Questy.API.csproj", "{0069F6D6-1202-4EB9-9F2E-7F6BE0FB914E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Questy.Admin", "Questy.Admin\Questy.Admin.csproj", "{123FD516-D005-4414-B771-454FA5FD9493}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Questy.Admin", "Questy.Admin\Questy.Admin.csproj", "{123FD516-D005-4414-B771-454FA5FD9493}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Questy.Kids", "Questy.Kids\Questy.Kids.csproj", "{4A9EE3C0-359C-4823-BE35-C55A9C5B721F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{123FD516-D005-4414-B771-454FA5FD9493}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{123FD516-D005-4414-B771-454FA5FD9493}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{123FD516-D005-4414-B771-454FA5FD9493}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A9EE3C0-359C-4823-BE35-C55A9C5B721F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A9EE3C0-359C-4823-BE35-C55A9C5B721F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A9EE3C0-359C-4823-BE35-C55A9C5B721F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A9EE3C0-359C-4823-BE35-C55A9C5B721F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
