@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Questy.Domain.Entities
 {
@@ -15,8 +12,15 @@ namespace Questy.Domain.Entities
         [Required]
         public int WeightPercentage { get; set; }
 
+        public int Experience { get; set; }
+
         public Archetype Archetype { get; set; }      
         
         public Weight Weight { get; set; }
+
+        public double CalculateLevel()
+        {
+            return Math.Truncate(((Math.Sqrt(625 + (100 * Experience)) - 25) / 50) + 1);
+        }
     }
 }
