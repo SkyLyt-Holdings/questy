@@ -28,5 +28,6 @@ namespace Questy.Domain.Entities
         public UserType UserType { get; set; }
         public List<QuestLog> QuestLog { get; set; }
         public bool isActive { get; set; }
+        public string PasswordSalt { get; set; }
     }
 }

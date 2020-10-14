@@ -2,9 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using Questy.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Questy.Data
 {
