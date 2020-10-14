@@ -33,7 +33,8 @@ namespace Questy.API
         {
             services.AddControllers();
             services.AddDbContext<QuestyContext>(opt =>
-                opt.UseSqlServer(Configuration.GetConnectionString("QuestyConnection"))
+                opt.UseSqlServer(Configuration.GetConnectionString("QuestyConnection"),
+                x => x.MigrationsAssembly("Questy.Data"))
                 .EnableSensitiveDataLogging());
 
             // Register the Swagger generator, defining 1 or more Swagger documents
