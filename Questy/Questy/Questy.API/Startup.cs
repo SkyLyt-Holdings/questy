@@ -19,8 +19,6 @@ namespace Questy.API
 {
     public class Startup
     {
-        private DbContext _context = new QuestyContext();
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -45,8 +43,9 @@ namespace Questy.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, QuestyContext context)
         {
+            context.Database.EnsureCreated();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

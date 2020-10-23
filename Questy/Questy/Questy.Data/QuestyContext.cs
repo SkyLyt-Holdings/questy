@@ -14,7 +14,7 @@ namespace Questy.Data
         public QuestyContext(DbContextOptions<QuestyContext> options)
             :base(options)
         {
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;         
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;         
         }
 
         public DbSet<User> Users { get; set; }
