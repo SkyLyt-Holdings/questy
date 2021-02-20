@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Questy.Admin", "Questy.Admi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Questy.Web", "Questy.Kids\Questy.Web.csproj", "{4A9EE3C0-359C-4823-BE35-C55A9C5B721F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Questy.Infrastructure", "Questy.Infrastructure\Questy.Infrastructure.csproj", "{F9CE38F8-2E53-4721-B72D-A4C267A649F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{4A9EE3C0-359C-4823-BE35-C55A9C5B721F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A9EE3C0-359C-4823-BE35-C55A9C5B721F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A9EE3C0-359C-4823-BE35-C55A9C5B721F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9CE38F8-2E53-4721-B72D-A4C267A649F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9CE38F8-2E53-4721-B72D-A4C267A649F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9CE38F8-2E53-4721-B72D-A4C267A649F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9CE38F8-2E53-4721-B72D-A4C267A649F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Questy.Data;
 using Questy.Domain.Entities;
+using Questy.Infrastructure.Repositories;
 
 namespace Questy.API
 {
@@ -34,6 +35,11 @@ namespace Questy.API
                 opt.UseSqlServer(Configuration.GetConnectionString("QuestyConnection"),
                 x => x.MigrationsAssembly("Questy.Data"))
                 .EnableSensitiveDataLogging());
+
+
+            #region DB Repositories
+            services.AddTransient(typeof(UserRepository));
+            #endregion
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
