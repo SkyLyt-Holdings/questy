@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Questy.API", "Questy.API\Qu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Questy.Admin", "Questy.Admin\Questy.Admin.csproj", "{123FD516-D005-4414-B771-454FA5FD9493}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Questy.Kids", "Questy.Kids\Questy.Kids.csproj", "{4A9EE3C0-359C-4823-BE35-C55A9C5B721F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Questy.Web", "Questy.Kids\Questy.Web.csproj", "{4A9EE3C0-359C-4823-BE35-C55A9C5B721F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

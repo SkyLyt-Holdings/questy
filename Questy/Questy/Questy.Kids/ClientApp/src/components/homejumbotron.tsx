@@ -11,12 +11,14 @@ export class HomeJumbotron extends React.Component {
             <hr className="my-4"></hr>
             <p>By gamifying everyday responsibilities it turns the mundane into fun!</p>
             <br />
-            <div className="row d-flex justify-content-center align-self-center">
-                <button className="button">
-                    Learn More
+            <div className="row">
+                <div className="col-md-4 offset-md-4 d-flex justify-content-center align-self-center">
+                    <button className="button">
+                        Learn More
                     <div className="button__horizontal"></div>
-                    <div className="button__vertical"></div>
-                </button>
+                        <div className="button__vertical"></div>
+                    </button>
+                </div>
             </div>
         </div>
     }

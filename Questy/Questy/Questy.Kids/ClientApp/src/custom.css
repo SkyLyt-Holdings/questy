@@ -1,6 +1,17 @@
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #e55743;
+    text-decoration: none;
+}
+
+a.active {
+    border-bottom: 3px solid #e55743;
+    padding-bottom: 3px;
+}
+
+a:hover {
+    color: #e29597;
+
 }
 
 code {

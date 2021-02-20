@@ -29,11 +29,12 @@ var HomeJumbotron = /** @class */ (function (_super) {
             React.createElement("hr", { className: "my-4" }),
             React.createElement("p", null, "By gamifying everyday responsibilities it turns the mundane into fun!"),
             React.createElement("br", null),
-            React.createElement("div", { className: "row d-flex justify-content-center align-self-center" },
-                React.createElement("button", { className: "button" },
-                    "Learn More",
-                    React.createElement("div", { className: "button__horizontal" }),
-                    React.createElement("div", { className: "button__vertical" }))));
+            React.createElement("div", { className: "row" },
+                React.createElement("div", { className: "col-md-4 offset-md-4 d-flex justify-content-center align-self-center" },
+                    React.createElement("button", { className: "button" },
+                        "Learn More",
+                        React.createElement("div", { className: "button__horizontal" }),
+                        React.createElement("div", { className: "button__vertical" })))));
     };
     return HomeJumbotron;
 }(React.Component));

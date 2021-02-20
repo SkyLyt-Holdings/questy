@@ -17,6 +17,7 @@ var React = require("react");
 var reactstrap_1 = require("reactstrap");
 var react_router_dom_1 = require("react-router-dom");
 require("./NavMenu.css");
+var CustomModal_1 = require("./CustomModal");
 var NavMenu = /** @class */ (function (_super) {
     __extends(NavMenu, _super);
     function NavMenu() {
@@ -41,11 +42,7 @@ var NavMenu = /** @class */ (function (_super) {
                     React.createElement(reactstrap_1.Collapse, { className: "d-sm-inline-flex flex-sm-row-reverse", isOpen: this.state.isOpen, navbar: true },
                         React.createElement("ul", { className: "navbar-nav flex-grow" },
                             React.createElement(reactstrap_1.NavItem, null,
-                                React.createElement(reactstrap_1.NavLink, { tag: react_router_dom_1.Link, className: "text-dark", to: "/" }, "Home")),
-                            React.createElement(reactstrap_1.NavItem, null,
-                                React.createElement(reactstrap_1.NavLink, { tag: react_router_dom_1.Link, className: "text-dark", to: "/counter" }, "Counter")),
-                            React.createElement(reactstrap_1.NavItem, null,
-                                React.createElement(reactstrap_1.NavLink, { tag: react_router_dom_1.Link, className: "text-dark", to: "/fetch-data" }, "Fetch data"))))))));
+                                React.createElement(CustomModal_1.default, null))))))));
     };
     return NavMenu;
 }(React.PureComponent));
