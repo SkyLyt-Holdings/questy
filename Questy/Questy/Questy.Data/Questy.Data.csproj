@@ -1,15 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Scripts\**" />
-    <EmbeddedResource Remove="Scripts\**" />
-    <None Remove="Scripts\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Migrations\20200516011536_quest-13.cs" />
@@ -30,6 +24,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Questy.Domain\Questy.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Scripts\Data\CodeTables\" />
   </ItemGroup>
 
 </Project>

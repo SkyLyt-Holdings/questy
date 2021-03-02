@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Questy.Data\Questy.Data.csproj" />
     <ProjectReference Include="..\Questy.Domain\Questy.Domain.csproj" />
+    <ProjectReference Include="..\Questy.Infrastructure\Questy.Infrastructure.csproj" />
   </ItemGroup>
 
 

@@ -5,8 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Questy.API.Controllers.User.DTOs;
 using Questy.Data;
 using Questy.Domain.Entities;
+using Questy.Infrastructure.Constants;
+using Questy.Infrastructure.ErrorHandling;
+using Questy.Infrastructure.Helpers.Security;
+using Questy.Infrastructure.Repositories;
 
 namespace Questy.API.Controllers
 {
@@ -14,97 +19,102 @@ namespace Questy.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly QuestyContext _context;
+        private UserRepository _userRepository;
 
-        public UsersController(QuestyContext context)
+        public UsersController(UserRepository userRepository)
         {
-            _context = context;
+            _userRepository = userRepository;
         }
+       
 
-        // GET: api/Users
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        [HttpPost("admin")]
+        public async Task<IActionResult> CreateAdminUser(AddNewUserRequestDTO request)
         {
-            return await _context.Users.ToListAsync();
-        }
-
-        // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
-        {
-            var user = await _context.Users.FindAsync(id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return user;
-        }
-
-        // PUT: api/Users/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
-        {
-            if (id != user.ID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
+                var exists = await _userRepository.FindByCondition(x => x.Username == request.Username).FirstOrDefaultAsync();
+
+                if (exists == null)
                 {
-                    return NotFound();
+                    var user = new Domain.Entities.User();
+                    user.Username = request.Username;
+                    user.Password = EncryptionHelper.HashPassword(request.Password);
+                    user.Email = request.Email;
+                    user.UserTypeID = UserTypes.Admin;
+                    user.AuditUser = request.Username;
+                    user.LastUpdated = DateTime.Now;
+                    user.isActive = true;
+
+                    _userRepository.Create(user);
+
+                    return Ok(user.Username);
                 }
-                else
+
+                return StatusCode(400, new BaseErrorResponse()
                 {
-                    throw;
-                }
+                    Error = true,
+                    Message = $"Username {request.Username} already exists, please try a different username."
+                });
+
             }
-
-            return NoContent();
-        }
-
-        // POST: api/Users
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
-        {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.ID }, user);
-        }
-
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUser(int id)
-        {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                //TODO: implement logging
+
+                return StatusCode(500, new BaseErrorResponse()
+                {
+                    Error = true,
+                    Message = $"An error occurred while processing the request.",
+                    DetailedMessage = ex.Message
+                });
             }
-
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return user;
         }
 
-        private bool UserExists(int id)
+        [HttpGet("login")]
+        public async Task<IActionResult> Login(UserRequestDTO request)
         {
-            return _context.Users.Any(e => e.ID == id);
+
+            try
+            {
+                var user = await _userRepository.FindByCondition(x => x.Username == request.Username).FirstOrDefaultAsync();
+
+                if (user == null)
+                {
+                    return StatusCode(404, new BaseErrorResponse()
+                    {
+                        Error = true,
+                        Message = $"No user found with the username: {request.Username}."
+                    });
+                }
+
+                var correctPassword = EncryptionHelper.VerifyPassword(user.Password, request.Password);
+
+                if (!correctPassword)
+                {
+                    return StatusCode(400, new BaseErrorResponse()
+                    {
+                        Error = true,
+                        Message = $"Incorrect password, please try again or reset your password."
+                    });
+                }
+
+
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                //TODO: implement logging
+
+                return StatusCode(500, new BaseErrorResponse()
+                {
+                    Error = true,
+                    Message = $"An error occurred while processing the request.",
+                    DetailedMessage = ex.Message
+                });
+            }
         }
+
     }
 }
