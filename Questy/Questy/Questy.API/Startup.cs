@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,10 +12,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Questy.Data;
 using Questy.Domain.Entities;
+using Questy.Infrastructure.Interfaces;
 using Questy.Infrastructure.Repositories;
+using Questy.Infrastructure.Services;
 
 namespace Questy.API
 {
@@ -37,9 +41,24 @@ namespace Questy.API
                 .EnableSensitiveDataLogging());
 
 
-            #region DB Repositories
-            services.AddTransient(typeof(UserRepository));
-            #endregion
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+
+            services.Configure<JwtSettings>(Configuration.GetSection("JWTSettings"));
+            services.AddScoped<IJwtManagement, JwtService>();
+
+            services.AddAuthentication().AddJwtBearer(cfg =>
+            {
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
+
+                cfg.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidIssuer = Configuration["JWTSettings:Issuer"],
+                    ValidAudience = Configuration["JWTSettings:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWTSettings:SecretKey"])),
+                    ValidateLifetime = true
+                };
+            });
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
@@ -68,6 +87,8 @@ namespace Questy.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseExceptionHandler("/error");
 
             app.UseHttpsRedirection();
 
