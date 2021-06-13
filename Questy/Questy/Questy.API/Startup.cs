@@ -1,26 +1,29 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Questy.Data;
 using Questy.Domain.Entities;
+using Questy.Infrastructure.Interfaces;
+using Questy.Infrastructure.Repositories;
+using Questy.Infrastructure.Services;
 
 namespace Questy.API
 {
     public class Startup
     {
-        //Ensure Database is already created
-        private static QuestyContext context = new QuestyContext();
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,6 +35,30 @@ namespace Questy.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddDbContext<QuestyContext>(opt =>
+                opt.UseSqlServer(Configuration.GetConnectionString("QuestyConnection"),
+                x => x.MigrationsAssembly("Questy.Data"))
+                .EnableSensitiveDataLogging());
+
+
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+
+            services.Configure<JwtSettings>(Configuration.GetSection("JWTSettings"));
+            services.AddScoped<IJwtManagement, JwtService>();
+
+            services.AddAuthentication().AddJwtBearer(cfg =>
+            {
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
+
+                cfg.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidIssuer = Configuration["JWTSettings:Issuer"],
+                    ValidAudience = Configuration["JWTSettings:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWTSettings:SecretKey"])),
+                    ValidateLifetime = true
+                };
+            });
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
@@ -41,10 +68,9 @@ namespace Questy.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, QuestyContext context)
         {
-
-            BuildDefaultDB();
+            context.Database.EnsureCreated();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
@@ -62,6 +88,8 @@ namespace Questy.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseExceptionHandler("/error");
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -72,24 +100,6 @@ namespace Questy.API
             {
                 endpoints.MapControllers();
             });
-        }
-
-        private void BuildDefaultDB()
-        {
-           if (context.Database.EnsureCreated())
-            {
-                List<UserType> userTypes = new List<UserType>{ 
-                    new UserType { Description = "End User" },
-                    new UserType { Description = "Admin" }};
-
-
-                foreach (var type in userTypes)
-                {
-                    context.UserTypes.Add(type);
-                }
-
-                context.SaveChanges();
-            }
         }
     }
 }

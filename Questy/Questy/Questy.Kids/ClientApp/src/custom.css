@@ -1,0 +1,32 @@
+/* Provide sufficient contrast against white background */
+a {
+    color: #e55743;
+    text-decoration: none;
+}
+
+a.active {
+    border-bottom: 3px solid #e55743;
+    padding-bottom: 3px;
+}
+
+a:hover {
+    color: #e29597;
+
+}
+
+code {
+  color: #E01A76;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #e86566;
+    border-color: #e86566;
+}
+
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #e29597;
+    border-color: #e29597;
+}
