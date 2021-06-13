@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using Questy.Domain.Entities;
+using Questy.Domain.Entities.System;
 
 namespace Questy.Data
 {
@@ -25,5 +26,6 @@ namespace Questy.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<UserBuild> UserBuilds { get; set; }
         public DbSet<Quest> Quests { get; set; }
+        public DbSet<ErrorLog> ErrorLogs { get; set; }
     }
 }

@@ -22,14 +22,12 @@ namespace Questy.Infrastructure.Repositories
         public T Create(T entity)
         {
             RepoContext.Set<T>().AddAsync(entity);
-            RepoContext.SaveChangesAsync();
             return entity;
         }
 
         public void Delete(T entity)
         {
             RepoContext.Set<T>().Remove(entity);
-            RepoContext.SaveChangesAsync();
         }
 
         public IQueryable<T> FindAll()
@@ -45,7 +43,6 @@ namespace Questy.Infrastructure.Repositories
         public T Update(T entity)
         {
             RepoContext.Set<T>().Update(entity);
-            RepoContext.SaveChangesAsync();
             return entity;
         }
     }
