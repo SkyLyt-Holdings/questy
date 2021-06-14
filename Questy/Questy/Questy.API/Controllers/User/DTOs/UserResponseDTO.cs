@@ -9,12 +9,10 @@ namespace Questy.API.Controllers.User.DTOs
 {
     public class UserResponseDTO
     {
-        // DTO and not the entire User object (Username, Email, IsActive, QuestLog, UserType (description, not id))
-        [Required]
         public string Username { get; set; }
         public string Email { get; set; }
         public bool IsActive { get; set; }
         public List<QuestLog> QuestLog { get; set; }
-        public string Description { get; set; }  // from User.UserType class
+        public string UserType { get; set; }
     }
-// from UserType
+}

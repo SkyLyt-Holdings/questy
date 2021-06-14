@@ -88,10 +88,13 @@ namespace Questy.API.Controllers
 
         }
 
-        [HttpGet("GetUserInfo")]
+        [HttpGet("{userId}")]
         public async Task<IActionResult> GetUserInfo(int userId)
         {
-            var user = await repositories.Users.FindByCondition(x => x.ID == userId).FirstOrDefaultAsync();
+            var user = await repositories.Users.FindByCondition(x => x.ID == userId)
+                .Include(x => x.UserType)
+                .Include(x => x.QuestLog)
+                .FirstOrDefaultAsync();
 
             if (user == null)
             {
@@ -108,7 +111,7 @@ namespace Questy.API.Controllers
                 Email = user.Email,
                 IsActive = user.isActive,
                 QuestLog = user.QuestLog,
-                Description = user.UserType?.Description ?? ""
+                UserType = user.UserType.Description
             };
 
             return Ok(responseDTO);
