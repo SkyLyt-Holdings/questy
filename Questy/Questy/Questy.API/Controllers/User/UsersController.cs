@@ -65,7 +65,7 @@ namespace Questy.API.Controllers
 
         }
 
-        [HttpGet("login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login(UserRequestDTO request)
         {
 
