@@ -1,39 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Questy.API.Controllers.User.DTOs;
-using Questy.Data;
-using Questy.Domain.Entities;
 using Questy.Infrastructure.Constants;
 using Questy.Infrastructure.ErrorHandling;
 using Questy.Infrastructure.Helpers.Security;
 using Questy.Infrastructure.Interfaces;
-using Questy.Infrastructure.Repositories;
 using Questy.Infrastructure.Services;
 
 namespace Questy.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : BaseController
     {
         private readonly IJwtManagement jwtManagement;
 
-        public UsersController(IJwtManagement jwtManagement, 
+        public UsersController(IJwtManagement jwtManagement,
+            IServiceProvider serviceProvider,
             IRepositoryWrapper repositories, 
-            IConfiguration configuration) : base(repositories, configuration)
+            IConfiguration configuration) : base(serviceProvider, repositories, configuration)
         {
             this.jwtManagement = jwtManagement;
         }
        
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateUser(AddNewUserRequestDTO request)
         {
             var exists = await repositories.Users.FindByCondition(x => x.Username == request.Username).FirstOrDefaultAsync();
@@ -66,6 +65,7 @@ namespace Questy.API.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(UserRequestDTO request)
         {
 
@@ -82,7 +82,9 @@ namespace Questy.API.Controllers
                 });
             }
 
-            var token = jwtManagement.GenerateJwtToken(user);
+            var isAdmin = user.UserTypeID == UserTypes.Admin ? true : false;
+
+            var token = jwtManagement.GenerateJwtToken(user, isAdmin);
 
             return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token)});
 
@@ -91,31 +93,35 @@ namespace Questy.API.Controllers
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetUserInfo(int userId)
         {
-            var user = await repositories.Users.FindByCondition(x => x.ID == userId)
-                .Include(x => x.UserType)
-                .Include(x => x.QuestLog)
-                .FirstOrDefaultAsync();
-
-            if (user == null)
+            if (IsAdmin)
             {
-                return StatusCode(400, new BaseErrorResponse()
+                var user = await repositories.Users.FindByCondition(x => x.ID == userId)
+                    .Include(x => x.UserType)
+                    .Include(x => x.QuestLog)
+                    .FirstOrDefaultAsync();
+
+                if (user == null)
                 {
-                    Error = true,
-                    Message = $"Cannot find user with ID {userId}."
-                });
+                    return StatusCode(400, new BaseErrorResponse()
+                    {
+                        Error = true,
+                        Message = $"Cannot find user with ID {userId}."
+                    });
+                }
+
+                var responseDTO = new UserResponseDTO
+                {
+                    Username = user.Username,
+                    Email = user.Email,
+                    IsActive = user.isActive,
+                    QuestLog = user.QuestLog,
+                    UserType = user.UserType.Description
+                };
+
+                return Ok(responseDTO);
             }
 
-            var responseDTO = new UserResponseDTO
-            {
-                Username = user.Username,
-                Email = user.Email,
-                IsActive = user.isActive,
-                QuestLog = user.QuestLog,
-                UserType = user.UserType.Description
-            };
-
-            return Ok(responseDTO);
+            return Unauthorized("Access denied");
         }
-
     }
 }

@@ -21,7 +21,7 @@ namespace Questy.Infrastructure.Services
 
     public interface IJwtManagement
     {
-        JwtSecurityToken GenerateJwtToken(User user);
+        JwtSecurityToken GenerateJwtToken(User user, bool isAdmin);
     }
 
     public class JwtService: IJwtManagement
@@ -33,14 +33,15 @@ namespace Questy.Infrastructure.Services
             this.jwtSettings = jwtSettings.Value;
         }
 
-        public JwtSecurityToken GenerateJwtToken(User user)
+        public JwtSecurityToken GenerateJwtToken(User user, bool isAdmin)
         {
 
             // list of claims we want to use
             var registeredClaims = new[]
             {
                 new Claim("Username", user.Username),
-                new Claim("Email", user.Email)
+                new Claim("Email", user.Email),
+                new Claim("IsAdmin", isAdmin.ToString())
             };
 
             // security key generated based on the secret key stored in appsettings.json
