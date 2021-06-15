@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Questy.Infrastructure.Interfaces;
 using System;
@@ -12,11 +13,20 @@ namespace Questy.API.Controllers
     {
         public readonly IRepositoryWrapper repositories;
         public IConfiguration configuration;
+        public bool IsAdmin = false;
 
-        public BaseController(IRepositoryWrapper repositories, IConfiguration configuration)
+        public BaseController(IServiceProvider serviceProvider, IRepositoryWrapper repositories, IConfiguration configuration)
         {
             this.repositories = repositories;
             this.configuration = configuration;
+
+            IHttpContextAccessor httpContextAccessor = serviceProvider.GetService(typeof(IHttpContextAccessor)) as IHttpContextAccessor;
+
+            if (httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+            {
+
+                IsAdmin = Convert.ToBoolean(httpContextAccessor.HttpContext.User.FindFirst("IsAdmin").Value);
+            }
         }
     }
 }

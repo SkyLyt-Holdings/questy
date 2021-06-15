@@ -19,7 +19,9 @@ namespace Questy.API.Controllers.Error
     [ApiController]
     public class ErrorController : BaseController
     {
-        public ErrorController(IRepositoryWrapper repositories, IConfiguration configuration) : base(repositories, configuration)
+        public ErrorController(IServiceProvider serviceProvider,
+            IRepositoryWrapper repositories, 
+            IConfiguration configuration) : base(serviceProvider, repositories, configuration)
         {
         }
 
