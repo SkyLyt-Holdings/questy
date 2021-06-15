@@ -88,5 +88,34 @@ namespace Questy.API.Controllers
 
         }
 
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetUserInfo(int userId)
+        {
+            var user = await repositories.Users.FindByCondition(x => x.ID == userId)
+                .Include(x => x.UserType)
+                .Include(x => x.QuestLog)
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return StatusCode(400, new BaseErrorResponse()
+                {
+                    Error = true,
+                    Message = $"Cannot find user with ID {userId}."
+                });
+            }
+
+            var responseDTO = new UserResponseDTO
+            {
+                Username = user.Username,
+                Email = user.Email,
+                IsActive = user.isActive,
+                QuestLog = user.QuestLog,
+                UserType = user.UserType.Description
+            };
+
+            return Ok(responseDTO);
+        }
+
     }
 }
