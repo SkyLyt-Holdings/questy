@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -121,6 +122,40 @@ namespace Questy.API.Controllers
                 return Ok(responseDTO);
             }
 
+            return Unauthorized("Access denied");
+        }
+        [HttpGet("GetUsers")]
+        public async Task<IActionResult> GetUsers()
+        {
+            if (IsAdmin)
+            {
+                var users = await repositories.Users.FindAll()
+                    .Include(x => x.UserType)
+                    .Include(x => x.QuestLog)
+                    .ToListAsync();
+                if (users.Count == 0)
+                {
+                    return StatusCode(400, new BaseErrorResponse()
+                    {
+                        Error = true,
+                        Message = "Cannot get any users from base!"
+                    });
+                }
+                var outList = new List<UserResponseDTO>();
+                foreach (var tmp in users)
+                {
+                    var user = new UserResponseDTO()
+                    {
+                        Username = tmp.Username,
+                        Email = tmp.Email,
+                        IsActive = tmp.isActive,
+                        QuestLog = tmp.QuestLog,
+                        UserType = tmp.UserType.Description
+                    };
+                    outList.Add(user);
+                }
+                return Ok(outList);
+            }
             return Unauthorized("Access denied");
         }
     }
