@@ -119,7 +119,7 @@ namespace Questy.API.Controllers
 
             return Unauthorized("Access denied");
         }
-        [HttpGet("GetUsers")]
+        [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
             if (IsAdmin)
