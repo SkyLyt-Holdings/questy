@@ -1,4 +1,5 @@
-﻿using MailKit.Net.Smtp;
+﻿using AutoMapper;
+using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -21,7 +22,8 @@ namespace Questy.API.Controllers.Error
     {
         public ErrorController(IServiceProvider serviceProvider,
             IRepositoryWrapper repositories, 
-            IConfiguration configuration) : base(serviceProvider, repositories, configuration)
+            IConfiguration configuration,
+            IMapper mapper) : base(serviceProvider, repositories, configuration, mapper)
         {
         }
 

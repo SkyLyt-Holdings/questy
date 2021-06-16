@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Questy.Infrastructure.Interfaces;
@@ -13,12 +14,14 @@ namespace Questy.API.Controllers
     {
         public readonly IRepositoryWrapper repositories;
         public IConfiguration configuration;
+        public IMapper mapper;
         public bool IsAdmin = false;
 
-        public BaseController(IServiceProvider serviceProvider, IRepositoryWrapper repositories, IConfiguration configuration)
+        public BaseController(IServiceProvider serviceProvider, IRepositoryWrapper repositories, IConfiguration configuration, IMapper mapper)
         {
             this.repositories = repositories;
             this.configuration = configuration;
+            this.mapper = mapper;
 
             IHttpContextAccessor httpContextAccessor = serviceProvider.GetService(typeof(IHttpContextAccessor)) as IHttpContextAccessor;
 
