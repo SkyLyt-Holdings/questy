@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Questy.API.Controllers.User.DTOs
+namespace Questy.Infrastructure.DTOs.User
 {
     public class UserResponseDTO
     {

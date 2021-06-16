@@ -20,6 +20,8 @@ using Questy.Domain.Entities;
 using Questy.Infrastructure.Interfaces;
 using Questy.Infrastructure.Repositories;
 using Questy.Infrastructure.Services;
+using AutoMapper;
+using Questy.Infrastructure.Helpers;
 
 namespace Questy.API
 {
@@ -68,6 +70,14 @@ namespace Questy.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
+             
+            services.AddAutoMapper(typeof(Startup));
+            var mappingConfig = new MapperConfiguration(x =>
+            {
+                x.AddProfile(new MappingHelper());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

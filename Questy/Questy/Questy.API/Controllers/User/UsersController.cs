@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Questy.API.Controllers.User.DTOs;
 using Questy.Infrastructure.Constants;
 using Questy.Infrastructure.ErrorHandling;
 using Questy.Infrastructure.Helpers.Security;
 using Questy.Infrastructure.Interfaces;
 using Questy.Infrastructure.Services;
+using AutoMapper;
+using Questy.Infrastructure.DTOs.User;
 
 namespace Questy.API.Controllers
 {
@@ -26,7 +27,8 @@ namespace Questy.API.Controllers
         public UsersController(IJwtManagement jwtManagement,
             IServiceProvider serviceProvider,
             IRepositoryWrapper repositories, 
-            IConfiguration configuration) : base(serviceProvider, repositories, configuration)
+            IConfiguration configuration,
+            IMapper mapper) : base(serviceProvider, repositories, configuration,mapper)
         {
             this.jwtManagement = jwtManagement;
         }
@@ -48,7 +50,7 @@ namespace Questy.API.Controllers
                     UserTypeID = request.IsAdmin ? UserTypes.Admin : UserTypes.User,
                     AuditUser = request.Username,
                     LastUpdated = DateTime.Now,
-                    isActive = true
+                    IsActive = true
                 };
 
                 repositories.Users.Create(user);
@@ -110,14 +112,7 @@ namespace Questy.API.Controllers
                     });
                 }
 
-                var responseDTO = new UserResponseDTO
-                {
-                    Username = user.Username,
-                    Email = user.Email,
-                    IsActive = user.isActive,
-                    QuestLog = user.QuestLog,
-                    UserType = user.UserType.Description
-                };
+                var responseDTO = mapper.Map<UserResponseDTO>(user);
 
                 return Ok(responseDTO);
             }
@@ -141,20 +136,9 @@ namespace Questy.API.Controllers
                         Message = "Cannot get any users from base!"
                     });
                 }
-                var outList = new List<UserResponseDTO>();
-                foreach (var tmp in users)
-                {
-                    var user = new UserResponseDTO()
-                    {
-                        Username = tmp.Username,
-                        Email = tmp.Email,
-                        IsActive = tmp.isActive,
-                        QuestLog = tmp.QuestLog,
-                        UserType = tmp.UserType.Description
-                    };
-                    outList.Add(user);
-                }
-                return Ok(outList);
+
+                var responseDTO = mapper.Map<List<UserResponseDTO>>(users);
+                return Ok(responseDTO);
             }
             return Unauthorized("Access denied");
         }
