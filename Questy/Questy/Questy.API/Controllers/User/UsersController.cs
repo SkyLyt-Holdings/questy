@@ -142,5 +142,66 @@ namespace Questy.API.Controllers
             }
             return Unauthorized("Access denied");
         }
+
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePassword(NewUserPasswordRequestDTO request)
+        {
+            var user = await repositories.Users.FindByCondition(x => x.ID == request.UserID).FirstOrDefaultAsync();
+
+            if (user != null)
+            {
+                var correctPassword = EncryptionHelper.VerifyPassword(user.Password, request.OldPassword);
+                if ( !correctPassword )
+                {
+                    return StatusCode(400, new BaseErrorResponse()
+                    {
+                        Error = true,
+                        Message = $"Incorrect old password, please try again."
+                    });
+                }
+                else 
+                {
+                    user.Password = EncryptionHelper.HashPassword(request.NewPassword);
+
+                    repositories.Users.Update(user);
+                    repositories.Save();
+
+                    return NoContent();
+                }
+            }
+
+            return StatusCode(400, new BaseErrorResponse()
+            {
+                Error = true,
+                Message = $"User with ID {request.UserID} does not exists, please try a different UserID."
+            });
+        }
+
+        [HttpPost("ChangeUserStatus")]
+        public async Task<IActionResult> ChangeUserStatus(UserStatusDTO request)
+        {
+            if (IsAdmin)
+            {
+
+                var user = await repositories.Users.FindByCondition(x => x.ID == request.UserID).FirstOrDefaultAsync();
+
+                if (user != null)
+                {
+                    user.IsActive = request.IsActive;
+
+                    repositories.Users.Update(user);
+                    repositories.Save();
+
+                    return NoContent();
+                }
+
+                return StatusCode(400, new BaseErrorResponse()
+                {
+                    Error = true,
+                    Message = $"User with ID {request.UserID} does not exists, please try a different UserID."
+                });
+            }
+            return Unauthorized("Access denied");
+        }
     }
 }
