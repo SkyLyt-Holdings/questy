@@ -72,12 +72,24 @@ namespace Questy.API
             });
              
             services.AddAutoMapper(typeof(Startup));
+
             var mappingConfig = new MapperConfiguration(x =>
             {
                 x.AddProfile(new MappingHelper());
             });
+
             IMapper mapper = mappingConfig.CreateMapper();
+
             services.AddSingleton(mapper);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "Questy",
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:55806").AllowAnyHeader().AllowAnyMethod();
+                                  });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -108,6 +120,8 @@ namespace Questy.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors("Questy");
 
             app.UseEndpoints(endpoints =>
             {

@@ -1,14 +1,33 @@
 /* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap');
 
-code {
-  color: #E01A76;
-}
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  color: #fff !important;
+  background-color: #8a2be2 !important;
+  border-color: #600eb3 !important;
+}
+
+.btn-primary:hover{
+  color: #fff !important;
+  background-color: #600eb3 !important;
+  border-color: #8a2be2 !important;
+}
+
+.btn-secondary {
+  color: #fff !important;
+  background-color: #008000 !important;
+  border-color: #116600 !important;
+}
+
+.btn-secondary:hover {
+  color: #fff !important;
+  background-color: #116600 !important;
+  border-color: #008000 !important;
+}
+
+body {
+  background-image: url("./img/forest.jpg");
+  background-repeat: no-repeat;
+  font-family: 'Cinzel Decorative';
 }
