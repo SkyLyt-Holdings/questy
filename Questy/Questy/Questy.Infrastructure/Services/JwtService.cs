@@ -41,7 +41,8 @@ namespace Questy.Infrastructure.Services
             {
                 new Claim("Username", user.Username),
                 new Claim("Email", user.Email),
-                new Claim("IsAdmin", isAdmin.ToString())
+                new Claim("IsAdmin", isAdmin.ToString()),
+                new Clain("UserID",user.ID.ToString())
             };
 
             // security key generated based on the secret key stored in appsettings.json

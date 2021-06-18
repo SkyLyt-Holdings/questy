@@ -19,20 +19,20 @@ namespace Questy.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : BaseController
     {
         private readonly IJwtManagement jwtManagement;
 
         public UsersController(IJwtManagement jwtManagement,
             IServiceProvider serviceProvider,
-            IRepositoryWrapper repositories, 
+            IRepositoryWrapper repositories,
             IConfiguration configuration,
-            IMapper mapper) : base(serviceProvider, repositories, configuration,mapper)
+            IMapper mapper) : base(serviceProvider, repositories, configuration, mapper)
         {
             this.jwtManagement = jwtManagement;
         }
-       
+
 
         [HttpPost]
         [AllowAnonymous]
@@ -89,7 +89,7 @@ namespace Questy.API.Controllers
 
             var token = jwtManagement.GenerateJwtToken(user, isAdmin);
 
-            return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token)});
+            return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
 
         }
 
@@ -151,7 +151,7 @@ namespace Questy.API.Controllers
             if (user != null)
             {
                 var correctPassword = EncryptionHelper.VerifyPassword(user.Password, request.OldPassword);
-                if ( !correctPassword )
+                if (!correctPassword)
                 {
                     return StatusCode(400, new BaseErrorResponse()
                     {
@@ -159,7 +159,7 @@ namespace Questy.API.Controllers
                         Message = $"Incorrect old password, please try again."
                     });
                 }
-                else 
+                else
                 {
                     user.Password = EncryptionHelper.HashPassword(request.NewPassword);
 
@@ -180,12 +180,12 @@ namespace Questy.API.Controllers
         [HttpPost("ChangeUserStatus")]
         public async Task<IActionResult> ChangeUserStatus(UserStatusDTO request)
         {
-            if (IsAdmin)
+
+            var user = await repositories.Users.FindByCondition(x => x.ID == request.UserID).FirstOrDefaultAsync();
+
+            if (user != null)
             {
-
-                var user = await repositories.Users.FindByCondition(x => x.ID == request.UserID).FirstOrDefaultAsync();
-
-                if (user != null)
+                if (IsAdmin || (user.ID == userID))
                 {
                     user.IsActive = request.IsActive;
 
@@ -194,14 +194,17 @@ namespace Questy.API.Controllers
 
                     return NoContent();
                 }
-
-                return StatusCode(400, new BaseErrorResponse()
+                return StatusCode(401, new BaseErrorResponse()
                 {
                     Error = true,
-                    Message = $"User with ID {request.UserID} does not exists, please try a different UserID."
+                    Message = "You do not have access to change this users status"
                 });
             }
-            return Unauthorized("Access denied");
+            return StatusCode(400, new BaseErrorResponse()
+            {
+                Error = true,
+                Message = $"User with ID {request.UserID} does not exists, please try a different UserID."
+            });
         }
     }
 }
