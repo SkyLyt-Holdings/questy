@@ -25,9 +25,5 @@
     <ProjectReference Include="..\Questy.Infrastructure\Questy.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\Quest\" />
-  </ItemGroup>
-
 
 </Project>

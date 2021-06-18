@@ -15,7 +15,7 @@ namespace Questy.Domain.Entities
 
         [Required]
         [Column(TypeName = "nvarchar(50)")]
-        public int Title { get; set; }
+        public string Title { get; set; }
 
         [Required]
         [Column(TypeName = "nvarchar(500)")]

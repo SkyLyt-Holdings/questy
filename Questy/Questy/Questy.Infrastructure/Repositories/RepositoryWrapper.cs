@@ -13,6 +13,7 @@ namespace Questy.Infrastructure.Repositories
         private QuestyContext QuestyContext { get; }
         private IUserRepository users;
         private IErrorLogRepository errorLogs;
+        private IQuestRepository quests;
 
         public RepositoryWrapper(QuestyContext questyContext)
         {
@@ -36,6 +37,15 @@ namespace Questy.Infrastructure.Repositories
                 return errorLogs;
             }
         }
+        public IQuestRepository Quests
+        {
+            get
+            {
+                if (quests == null) quests = new QuestRepository(QuestyContext);
+                return quests;
+            }
+        }
+
 
         public void Save()
         {
