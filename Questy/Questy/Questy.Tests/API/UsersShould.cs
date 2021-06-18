@@ -1,5 +1,5 @@
 ﻿using Questy.API;
-using Questy.API.Controllers.User.DTOs;
+using Questy.Infrastructure.DTOs.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -17,7 +17,7 @@ export interface fetchDataRequest extends fetchRequest {
     data?: any
 }
 
-const baseUrl = "/api"
+const baseUrl = "http://localhost:55795/api";
 const OK = 200;
 const CREATED_AT = 201;
 const NO_CONTENT = 204;
@@ -45,8 +45,10 @@ function baseErrorHandler(error: string) {
 
 function getRequest(req: fetchRequest) {
     const token = getApiToken();
-
-    fetch(baseUrl + req.endpoint, {headers: {"Authorization": `bearer ${token}`}})
+    var head = new Headers();
+    head.append("Authorization", `bearer ${token}`);
+    
+    fetch(baseUrl + req.endpoint, {headers: head})
     .then(res => responseHandler(res))
     .then(data => req.callback(data))
     .catch((error: fetchErrorResponse) => {
@@ -59,8 +61,11 @@ function getRequest(req: fetchRequest) {
 
 function postRequest(req: fetchDataRequest) {
     const token = getApiToken();
+    var head = new Headers();
+    head.append("Authorization", `bearer ${token}`);
+    head.append("Content-Type", "application/json");
 
-    fetch(baseUrl + req.endpoint, {method: "POST", headers: {"Authorization": `bearer ${token}`, 'Content–Type': 'application/json', "Accept": "application/json"}, body: JSON.stringify(req.data)})
+    fetch(baseUrl + req.endpoint, {method: "POST", headers: head, body: JSON.stringify(req.data)})
     .then(res => responseHandler(res))
     .then(data => req.callback(data))
     .catch((error: fetchErrorResponse) => {
@@ -73,8 +78,11 @@ function postRequest(req: fetchDataRequest) {
 
 function putRequest(req: fetchDataRequest) {
     const token = getApiToken();
+    var head = new Headers();
+    head.append("Authorization", `bearer ${token}`);
+    head.append("Content-Type", "application/json");
 
-    fetch(baseUrl + req.endpoint, {method: "PUT", headers: {"Authorization": `bearer ${token}`, 'Content–Type': 'application/json'}, body: JSON.stringify(req.data)})
+    fetch(baseUrl + req.endpoint, {method: "PUT", headers: head, body: JSON.stringify(req.data)})
     .then(res => responseHandler(res))
     .then(data => req.callback(data))
     .catch((error: fetchErrorResponse) => {
@@ -88,7 +96,7 @@ function putRequest(req: fetchDataRequest) {
 function deleteRequest(req: fetchRequest) {
     const token = getApiToken();
 
-    fetch(baseUrl + req.endpoint, {headers: {"Authorization": `bearer ${token}`}})
+    fetch(baseUrl + req.endpoint, {method: "DELETE", headers: {"Authorization": `bearer ${token}`}})
     .then(res => responseHandler(res))
     .then(data => req.callback(data))
     .catch((error: fetchErrorResponse) => {
