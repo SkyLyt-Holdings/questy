@@ -15,6 +15,6 @@ namespace Questy.Tests.API
 
         // TODO: Implement long live token
         public static string GetToken()
-            => "";
+            => "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6IlNsaW1lbG9yZCIsIkVtYWlsIjoidGF0dGVkZGV2QGdtYWlsLmNvbSIsIklzQWRtaW4iOiJUcnVlIiwiVXNlcklEIjoiMSIsImV4cCI6MTY1NTg0MTU2OCwiaXNzIjoiUXVlc3R5QVBJIiwiYXVkIjoiUXVlc3R5QVBJIn0.4OZlRBtzsLfUkxFDIhdt__BvTVjhNCxEbdIAx817zEw";
     }
 }
