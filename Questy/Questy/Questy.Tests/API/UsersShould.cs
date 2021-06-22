@@ -105,10 +105,12 @@ namespace Questy.Tests.API
                      IsActive = false
                 }
             };
+
             // Act
             var response = await Client.PostAsync(request.Url, ContentHelper.GetStringContent(request.Body));
             var content = response.Content.ReadAsStringAsync().Result;
 
+            // Assert
             Assert.True(response.StatusCode == System.Net.HttpStatusCode.NoContent);
         }
     }
