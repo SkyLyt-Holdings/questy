@@ -42,5 +42,74 @@ namespace Questy.Tests.API
             // Assert
             Assert.Contains("token", content);
         }
+        [Fact]
+        public async Task CreateUserSuccessfully()
+        {
+            // Arrange
+            var request = new
+            {
+                Url = "/api/users",
+                Body = new AddNewUserRequestDTO
+                {
+                    Username = "Slimelord111",
+                    Password = "Revan456lord111",
+                    Email = "tatteddev@gmail.com",
+                    IsAdmin = false
+                }
+            };
+
+            // Act
+            var response = await Client.PostAsync(request.Url, ContentHelper.GetStringContent(request.Body));
+            var content = response.Content.ReadAsStringAsync().Result;
+
+            // Assert
+            Assert.Contains("Slimelord111", content);
+        }
+
+        [Fact]
+        public async Task GetUserInfoSuccessfully()
+        {
+            // Arrange
+            string url = "/api/users/1";
+
+            // Act
+            var response = await Client.GetAsync(url);
+            var content = response.Content.ReadAsStringAsync().Result;
+
+            // Assert
+            Assert.Contains("username", content);
+        }
+        [Fact]
+        public async Task GetUsersSuccessfully()
+        {
+            // Arrange
+            string url = "/api/users";
+
+            // Act
+            var response = await Client.GetAsync(url);
+            var content = response.Content.ReadAsStringAsync().Result;
+
+            // Assert
+            Assert.True(response.StatusCode == System.Net.HttpStatusCode.OK);
+        }
+        [Fact]
+        public async Task ChangeUserStatusSuccessfully()
+        {
+            // Arrange
+            var request = new
+            {
+                Url = "/api/users/ChangeUserStatus",
+                Body = new UserStatusDTO
+                {
+                     UserID = 1,
+                     IsActive = false
+                }
+            };
+            // Act
+            var response = await Client.PostAsync(request.Url, ContentHelper.GetStringContent(request.Body));
+            var content = response.Content.ReadAsStringAsync().Result;
+
+            Assert.True(response.StatusCode == System.Net.HttpStatusCode.NoContent);
+        }
     }
 }
