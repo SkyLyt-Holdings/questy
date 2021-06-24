@@ -10,8 +10,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using MimeKit.Text;
+using Questy.Domain.Entities;
 using Questy.Domain.Entities.System;
 using Questy.Infrastructure.DTOs.Quest;
+using Questy.Infrastructure.DTOs.Tag;
 using Questy.Infrastructure.ErrorHandling;
 using Questy.Infrastructure.Interfaces;
 using System;
@@ -23,7 +25,7 @@ namespace Questy.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+//    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class QuestsController : BaseController
     {
         public QuestsController(IServiceProvider serviceProvider,
