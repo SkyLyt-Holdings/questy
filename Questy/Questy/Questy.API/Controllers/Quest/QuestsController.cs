@@ -36,6 +36,7 @@ namespace Questy.API.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> AddQuest(QuestDTO request)
         {
             if (IsAdmin)

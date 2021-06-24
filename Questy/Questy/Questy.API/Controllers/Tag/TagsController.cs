@@ -35,6 +35,7 @@ namespace Questy.API.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> AddTag(TagDTO request)
         {
             if (IsAdmin)
