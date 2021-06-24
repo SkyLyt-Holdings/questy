@@ -25,7 +25,7 @@ namespace Questy.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-//    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class QuestsController : BaseController
     {
         public QuestsController(IServiceProvider serviceProvider,
@@ -40,7 +40,7 @@ namespace Questy.API.Controllers
         {
             if (IsAdmin)
             {
-                var exists = await repositories.Quests.FindByCondition(x => x.Title == request.Title).FirstOrDefaultAsync();
+                var exists = await repositories.Quests.FindByCondition(x => x.ID == request.ID).FirstOrDefaultAsync();
 
                 if (exists == null)
                 {
@@ -63,7 +63,7 @@ namespace Questy.API.Controllers
                 return StatusCode(400, new BaseErrorResponse()
                 {
                     Error = true,
-                    Message = $"Cannot create quest with title {request.Title}."
+                    Message = $"Cannot create quest with ID {request.ID}."
                 });
             }
             return Unauthorized("Access denied");
