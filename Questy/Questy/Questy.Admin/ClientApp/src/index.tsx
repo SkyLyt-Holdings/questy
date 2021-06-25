@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 import Home from '../src/routes/Home/Home';
 import Login from '../src/routes/Home/Login';
+import Nav from './shared/Nav';
 import {
     BrowserRouter as Router,
     Switch,
@@ -21,9 +22,11 @@ const App = () => {
                 <Route path='/login'>
                     <Login/>
                 </Route>
-                <Route path='/'>
-                    <Home />
-                </Route>
+                <Nav>           
+                    <Route path='/'>
+                        <Home />
+                    </Route>
+                </Nav>
             </Switch>
         </Router>
     )
