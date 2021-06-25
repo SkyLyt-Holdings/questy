@@ -12,6 +12,7 @@ using MimeKit;
 using MimeKit.Text;
 using Questy.Domain.Entities.System;
 using Questy.Infrastructure.DTOs.Quest;
+using Questy.Infrastructure.DTOs.QuestTag;
 using Questy.Infrastructure.DTOs.Tag;
 using Questy.Infrastructure.ErrorHandling;
 using Questy.Infrastructure.Interfaces;
@@ -35,34 +36,29 @@ namespace Questy.API.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> AddTag(TagDTO request)
         {
-            if (IsAdmin)
+            var exists = await repositories.Tags.FindByCondition(x => x.Description == request.Description).FirstOrDefaultAsync();
+
+            if (exists == null)
             {
-                var exists = await repositories.Quests.FindByCondition(x => x.ID == request.ID).FirstOrDefaultAsync();
-
-                if (exists == null)
+                var quest = new Domain.Entities.Tag
                 {
-                    var quest = new Domain.Entities.Tag
-                    {
-                        Description = request.Description,
-                        AuditUser = userID.ToString(),
-                        LastUpdated = DateTime.Now
-                    };
+                    Description = request.Description,
+                    AuditUser = userID.ToString(),
+                    LastUpdated = DateTime.Now
+                };
 
-                    repositories.Tags.Create(quest);
-                    repositories.Save();
+                repositories.Tags.Create(quest);
+                repositories.Save();
 
-                    return Created("~/api/tags", quest);
-                }
-                return StatusCode(400, new BaseErrorResponse()
-                {
-                    Error = true,
-                    Message = $"Cannot create tag with description {request.Description}."
-                });
+                return Created("~/api/tags", quest);
             }
-            return Unauthorized("Access denied");
+            return StatusCode(400, new BaseErrorResponse()
+            {
+                Error = true,
+                Message = $"Cannot create tag with description {request.Description}."
+            });
         }
 
         [HttpGet("{tagId}")]
@@ -148,6 +144,59 @@ namespace Questy.API.Controllers
 
             var responseDTO = mapper.Map<List<TagDTO>>(tags);
             return Ok(responseDTO);
+        }
+
+        [HttpPost("AddQuestTag")]
+        public async Task<IActionResult> AddQuestTag(QuestTagDTO request)
+        {
+            var exists = await repositories.QuestTags
+                               .FindByCondition(x => (x.QuestID == request.QuestID) && (x.TagID == request.TagID))
+                               .FirstOrDefaultAsync();
+
+            if (exists == null)
+            {
+                var quest = new Domain.Entities.QuestTag
+                {
+                    QuestID = request.QuestID,
+                    TagID = request.TagID,
+                    AuditUser = userID.ToString(),
+                    LastUpdated = DateTime.Now
+                };
+
+                repositories.QuestTags.Create(quest);
+                repositories.Save();
+
+                return Created("~/api/tags", quest);
+            }
+            return StatusCode(400, new BaseErrorResponse()
+            {
+                Error = true,
+                Message = $"Cannot create QuestTag record with quest ID {request.QuestID} and tag ID {request.TagID}."
+            });
+        }
+
+        [HttpDelete("DeleteQuestTag/{qtID}")]
+        public async Task<IActionResult> DeleteQuestTag(int qtID)
+        {
+            if (IsAdmin)
+            {
+                var quest = await repositories.QuestTags.FindByCondition(x => x.ID == qtID).FirstOrDefaultAsync();
+
+                if (quest == null)
+                {
+                    return StatusCode(404, new BaseErrorResponse()
+                    {
+                        Error = true,
+                        Message = $"Cannot find QuestTag record with ID {qtID}."
+                    });
+                }
+
+                repositories.QuestTags.Delete(quest);
+                repositories.Save();
+
+                return NoContent();
+            }
+            return Unauthorized("Access denied");
         }
     }
 }

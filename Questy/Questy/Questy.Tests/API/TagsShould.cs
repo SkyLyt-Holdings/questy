@@ -1,4 +1,6 @@
-﻿using Questy.API;
+﻿using Newtonsoft.Json;
+using Questy.API;
+using Questy.Infrastructure.DTOs.QuestTag;
 using Questy.Infrastructure.DTOs.Tag;
 using System;
 using System.Collections.Generic;
@@ -75,19 +77,6 @@ namespace Questy.Tests.API
             Assert.True(response.StatusCode == System.Net.HttpStatusCode.NoContent);
         }
         [Fact]
-        public async Task DeleteTagSuccessfully()
-        {
-            // Arrange
-            string url = "/api/tags/2";
-
-            // Act
-            var response = await Client.DeleteAsync(url);
-            var content = response.Content.ReadAsStringAsync().Result;
-
-            // Assert
-            Assert.Contains("Modern", content);
-        }
-        [Fact]
         public async Task GetAllTagsSuccessfully()
         {
             // Arrange
@@ -99,6 +88,57 @@ namespace Questy.Tests.API
 
             // Assert
             Assert.True(response.StatusCode == System.Net.HttpStatusCode.OK);
+        }
+        [Fact]
+        public async Task DeleteTagSuccessfully()
+        {
+            // TODO: Implement the logic that record existed in [Tags] table before delete
+
+            // Arrange
+            string url = "/api/tags/2";
+
+            // Act
+            var response = await Client.DeleteAsync(url);
+            var content = response.Content.ReadAsStringAsync().Result;
+
+            // Assert
+            Assert.True(response.StatusCode == System.Net.HttpStatusCode.NoContent);
+        }
+        [Fact]
+        public async Task AddQuestTagSuccessfully()
+        {
+            // Arrange
+            var request = new
+            {
+                Url = "/api/tags/AddQuestTag",
+                Body = new QuestTagDTO
+                {
+                    QuestID = 9,
+                    TagID = 1
+                }
+            };
+
+            // Act
+            var response = await Client.PostAsync(request.Url, ContentHelper.GetStringContent(request.Body));
+            var content = response.Content.ReadAsStringAsync().Result;
+
+            // Assert
+            Assert.Contains("tagID", content);
+        }
+        [Fact]
+        public async Task DeleteQuestTagSuccessfully()
+        {
+            // TODO: Implement the logic that record existed in [QuestTag] table before delete
+
+            // Arrange
+            string url = "/api/tags/DeleteQuestTag/3";
+             
+            // Act
+            var response = await Client.DeleteAsync(url);
+            var content = response.Content.ReadAsStringAsync().Result;
+
+            // Assert
+            Assert.True(response.StatusCode == System.Net.HttpStatusCode.NoContent);
         }
     }
 }

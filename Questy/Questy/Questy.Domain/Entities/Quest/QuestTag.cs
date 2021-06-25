@@ -12,7 +12,7 @@ namespace Questy.Domain.Entities
         
         public int TagID { get; set; }
         
-        public Quest Archetype { get; set; }
+        public Quest Quest { get; set; }
         
         public Tag Tag { get; set; }
     }

@@ -15,6 +15,7 @@ namespace Questy.Infrastructure.Repositories
         private IErrorLogRepository errorLogs;
         private IQuestRepository quests;
         private ITagRepository tags;
+        private IQuestTagRepository questTags;
 
         public RepositoryWrapper(QuestyContext questyContext)
         {
@@ -53,6 +54,15 @@ namespace Questy.Infrastructure.Repositories
             {
                 if (tags == null) tags = new TagRepository(QuestyContext);
                 return tags;
+            }
+        }
+
+        public IQuestTagRepository QuestTags
+        {
+            get
+            {
+                if (questTags == null) questTags = new QuestTagRepository(QuestyContext);
+                return questTags;
             }
         }
 

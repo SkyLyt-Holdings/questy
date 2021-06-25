@@ -36,38 +36,33 @@ namespace Questy.API.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> AddQuest(QuestDTO request)
         {
-            if (IsAdmin)
+            var exists = await repositories.Quests.FindByCondition(x => x.Title == request.Title).FirstOrDefaultAsync();
+
+            if (exists == null)
             {
-                var exists = await repositories.Quests.FindByCondition(x => x.ID == request.ID).FirstOrDefaultAsync();
-
-                if (exists == null)
+                var quest = new Domain.Entities.Quest
                 {
-                    var quest = new Domain.Entities.Quest
-                    {
-                        Title = request.Title,
-                        Description = request.Description,
-                        StartDate = request.StartDate == null ? DateTime.Now : Convert.ToDateTime(request.StartDate),
-                        EndDate = Convert.ToDateTime(request.EndDate),
-                        AuditUser = userID.ToString(),
-                        LastUpdated = DateTime.Now
-                    }; 
+                    Title = request.Title,
+                    Description = request.Description,
+                    StartDate = request.StartDate == null ? DateTime.Now : Convert.ToDateTime(request.StartDate),
+                    EndDate = Convert.ToDateTime(request.EndDate),
+                    AuditUser = userID.ToString(),
+                    LastUpdated = DateTime.Now
+                };
 
 
-                    repositories.Quests.Create(quest);
-                    repositories.Save();
+                repositories.Quests.Create(quest);
+                repositories.Save();
 
-                    return Created("~/api/quests", quest.Title);
-                }
-                return StatusCode(400, new BaseErrorResponse()
-                {
-                    Error = true,
-                    Message = $"Cannot create quest with ID {request.ID}."
-                });
+                return Created("~/api/quests", quest.Title);
             }
-            return Unauthorized("Access denied");
+            return StatusCode(400, new BaseErrorResponse()
+            {
+                Error = true,
+                Message = $"Cannot create quest with title {request.Title}."
+            });
         }
 
         [HttpGet("{questId}")]

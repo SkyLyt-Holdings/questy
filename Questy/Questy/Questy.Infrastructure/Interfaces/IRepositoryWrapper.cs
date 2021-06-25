@@ -12,6 +12,8 @@ namespace Questy.Infrastructure.Interfaces
         IErrorLogRepository ErrorLogs { get; }
         IQuestRepository Quests { get; }
         ITagRepository Tags { get; }
+        IQuestTagRepository QuestTags { get; }
+
         void Save();
     }
 }
