@@ -16,7 +16,7 @@ namespace Questy.API.Controllers
         public IConfiguration configuration;
         public IMapper mapper;
         public bool IsAdmin = false;
-        public int userID;
+        public int UserID;
 
         public BaseController(IServiceProvider serviceProvider, IRepositoryWrapper repositories, IConfiguration configuration, IMapper mapper)
         {
@@ -29,7 +29,7 @@ namespace Questy.API.Controllers
             if (httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
                 IsAdmin = Convert.ToBoolean(httpContextAccessor.HttpContext.User.FindFirst("IsAdmin").Value);
-                userID = Convert.ToInt32(httpContextAccessor.HttpContext.User.FindFirst("UserID").Value);
+                UserID = Convert.ToInt32(httpContextAccessor.HttpContext.User.FindFirst("UserID").Value);
             }
         }
     }

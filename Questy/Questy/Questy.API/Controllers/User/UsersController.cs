@@ -107,7 +107,7 @@ namespace Questy.API.Controllers
 
                 if (user == null)
                 {
-                    return StatusCode(400, new BaseErrorResponse()
+                    return StatusCode(404, new BaseErrorResponse()
                     {
                         Error = true,
                         Message = $"Cannot find user with ID {userId}."
@@ -121,6 +121,7 @@ namespace Questy.API.Controllers
 
             return Unauthorized("Access denied");
         }
+
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
@@ -130,22 +131,24 @@ namespace Questy.API.Controllers
                     .Include(x => x.UserType)
                     .Include(x => x.QuestLog)
                     .ToListAsync();
+
                 if (users.Count == 0)
                 {
                     return StatusCode(400, new BaseErrorResponse()
                     {
                         Error = true,
-                        Message = "Cannot get any users from base!"
+                        Message = "There are no users."
                     });
                 }
 
                 var responseDTO = mapper.Map<List<UserResponseDTO>>(users);
                 return Ok(responseDTO);
             }
+
             return Unauthorized("Access denied");
         }
 
-        [HttpPost("ChangePassword")]
+        [HttpPost("password")]
         public async Task<IActionResult> ChangePassword(NewUserPasswordRequestDTO request)
         {
             var user = await repositories.Users.FindByCondition(x => x.ID == request.UserID).FirstOrDefaultAsync();
@@ -172,14 +175,14 @@ namespace Questy.API.Controllers
                 }
             }
 
-            return StatusCode(400, new BaseErrorResponse()
+            return StatusCode(404, new BaseErrorResponse()
             {
                 Error = true,
                 Message = $"User with ID {request.UserID} does not exists, please try a different UserID."
             });
         }
 
-        [HttpPost("ChangeUserStatus")]
+        [HttpPost("status")]
         public async Task<IActionResult> ChangeUserStatus(UserStatusDTO request)
         {
 
@@ -187,7 +190,7 @@ namespace Questy.API.Controllers
 
             if (user != null)
             {
-                if (IsAdmin || (user.ID == userID))
+                if (IsAdmin || (user.ID == UserID))
                 {
                     user.IsActive = request.IsActive;
 
@@ -196,13 +199,15 @@ namespace Questy.API.Controllers
 
                     return NoContent();
                 }
+
                 return StatusCode(401, new BaseErrorResponse()
                 {
                     Error = true,
                     Message = "You do not have access to change this users status"
                 });
+
             }
-            return StatusCode(400, new BaseErrorResponse()
+            return StatusCode(404, new BaseErrorResponse()
             {
                 Error = true,
                 Message = $"User with ID {request.UserID} does not exists, please try a different UserID."

@@ -48,20 +48,20 @@ namespace Questy.API.Controllers
                     Description = request.Description,
                     StartDate = request.StartDate == null ? DateTime.Now : Convert.ToDateTime(request.StartDate),
                     EndDate = Convert.ToDateTime(request.EndDate),
-                    AuditUser = userID.ToString(),
+                    AuditUser = UserID.ToString(),
                     LastUpdated = DateTime.Now
                 };
-
 
                 repositories.Quests.Create(quest);
                 repositories.Save();
 
                 return Created("~/api/quests", quest.Title);
             }
+
             return StatusCode(400, new BaseErrorResponse()
             {
                 Error = true,
-                Message = $"Cannot create quest with title {request.Title}."
+                Message = $"Quest with title '{request.Title}' already exists."
             });
         }
 
@@ -84,7 +84,7 @@ namespace Questy.API.Controllers
             return Ok(responseDTO);
         }
 
-        [HttpPost("UpdateQuest")]
+        [HttpPost("update")]
         public async Task<IActionResult> UpdateQuest(QuestDTO request)
         {
             if (IsAdmin)
@@ -100,12 +100,14 @@ namespace Questy.API.Controllers
 
                     return NoContent();
                 }
-                return StatusCode(400, new BaseErrorResponse()
+
+                return StatusCode(404, new BaseErrorResponse()
                 {
                     Error = true,
                     Message = $"Cannot get quest with ID {request.ID}."
                 });
             }
+
             return Unauthorized("Access denied");
         }
     }
