@@ -14,9 +14,7 @@ namespace Questy.Domain.Entities
 
         public int Experience { get; set; }
 
-        public Archetype Archetype { get; set; }      
-        
-        public Weight Weight { get; set; }
+        public Archetype Archetype { get; set; }        
 
         public double CalculateLevel()
         {
