@@ -74,23 +74,25 @@ namespace Questy.API.Controllers
 
             var user = await repositories.Users.FindByCondition(x => x.Username == request.Username).FirstOrDefaultAsync();
 
-            var correctPassword = EncryptionHelper.VerifyPassword(user.Password, request.Password);
-
-            if (!correctPassword || user == null)
+            if (user != null)
             {
-                return StatusCode(400, new BaseErrorResponse()
+                var correctPassword = EncryptionHelper.VerifyPassword(user.Password, request.Password);
+
+                if (correctPassword)
                 {
-                    Error = true,
-                    Message = $"Incorrect email and/or password, please try again or reset your password."
-                });
+                    var isAdmin = user.UserTypeID == UserTypes.Admin ? true : false;
+
+                    var token = jwtManagement.GenerateJwtToken(user, isAdmin);
+
+                    return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+                }
             }
 
-            var isAdmin = user.UserTypeID == UserTypes.Admin ? true : false;
-
-            var token = jwtManagement.GenerateJwtToken(user, isAdmin);
-
-            return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
-
+            return StatusCode(400, new BaseErrorResponse()
+            {
+                Error = true,
+                Message = $"Incorrect email and/or password, please try again or reset your password."
+            });
         }
 
         [HttpGet("{userId}")]

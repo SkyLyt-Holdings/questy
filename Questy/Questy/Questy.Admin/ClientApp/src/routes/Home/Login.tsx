@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
     header : {
         margin: 20
     },
-    buttons: {
-        margin: 10
+    button: {
+        margin: 5
     }
   }));
 
@@ -107,9 +107,9 @@ const Login = () => {
                                     }}
                                 />
                                 </Grid>
-                                <Grid item md={12} className={classes.buttons}>
-                                    <Button className="btn-primary mx-1">Forgot Password</Button>
-                                    <Button onClick={handleSubmit} className="btn-secondary mx-1" disabled={isSubmitting}>Log In</Button>
+                                <Grid item md={12}>
+                                    <Button className={classes.button} variant="contained" color="primary">Forgot Password</Button>
+                                    <Button onClick={handleSubmit} className={classes.button} variant="contained" color="secondary" disabled={isSubmitting}>Log In</Button>
                                 </Grid>
                                 {hasErrors && <Grid item md={12}>
                                     <span className="text-danger">
