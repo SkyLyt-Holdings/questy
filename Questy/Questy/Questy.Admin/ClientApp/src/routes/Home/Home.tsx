@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { useHistory } from 'react-router';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+import {Paper, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import LocalStorage from '../../helpers/LocalStorage';
+import { useTheme } from '@material-ui/core/styles';
 
 const Home = () => {
     const history = useHistory();
+    const theme = useTheme();
 
     React.useEffect(() => {
         const token = LocalStorage.getToken();
@@ -20,8 +21,7 @@ const Home = () => {
         paper: {
           padding: theme.spacing(2),
           textAlign: 'center',
-          color: theme.palette.text.secondary,
-        },
+        }
       })); 
 
       const classes = useStyles();
@@ -32,7 +32,9 @@ return (
           <Grid container spacing={3}>     
               <Grid item xs={12}>
                     <Paper className={classes.paper}>
-                        <h1 className="text-black">Dashboard</h1>
+                      <Typography variant="h3">
+                        Dashboard
+                      </Typography>
                     </Paper>
                 </Grid>
           </Grid>
