@@ -42,31 +42,32 @@ namespace Questy.API.Controllers
 
             if (exists == null)
             {
-                var quest = new Domain.Entities.Tag
+                var tag = new Domain.Entities.Tag
                 {
                     Description = request.Description,
-                    AuditUser = userID.ToString(),
+                    AuditUser = UserID.ToString(),
                     LastUpdated = DateTime.Now
                 };
 
-                repositories.Tags.Create(quest);
+                repositories.Tags.Create(tag);
                 repositories.Save();
 
-                return Created("~/api/tags", quest);
+                return Created("~/api/tags", tag);
             }
+
             return StatusCode(400, new BaseErrorResponse()
             {
                 Error = true,
-                Message = $"Cannot create tag with description {request.Description}."
+                Message = $"Tag with description: '{request.Description}' already exists."
             });
         }
 
         [HttpGet("{tagId}")]
         public async Task<IActionResult> GetTag(int tagId)
         {
-            var quest = await repositories.Tags.FindByCondition(x => x.ID == tagId).FirstOrDefaultAsync();
+            var tag = await repositories.Tags.FindByCondition(x => x.ID == tagId).FirstOrDefaultAsync();
 
-            if (quest == null)
+            if (tag == null)
             {
                 return StatusCode(404, new BaseErrorResponse()
                 {
@@ -75,21 +76,21 @@ namespace Questy.API.Controllers
                 });
             }
 
-            var responseDTO = mapper.Map<TagDTO>(quest);
+            var responseDTO = mapper.Map<TagDTO>(tag);
 
             return Ok(responseDTO);
         }
 
-        [HttpPost("UpdateTag")]
+        [HttpPost("update")]
         public async Task<IActionResult> UpdateTag(TagDTO request)
         {
             if (IsAdmin)
             {
-                var quest = await repositories.Tags.FindByCondition(x => x.ID == request.ID).FirstOrDefaultAsync();
+                var tag = await repositories.Tags.FindByCondition(x => x.ID == request.ID).FirstOrDefaultAsync();
 
-                if (quest != null)
+                if (tag != null)
                 {
-                    var updatedTag = mapper.Map(request, quest);
+                    var updatedTag = mapper.Map(request, tag);
 
                     repositories.Tags.Update(updatedTag);
                     repositories.Save();
@@ -102,6 +103,7 @@ namespace Questy.API.Controllers
                     Message = $"Cannot get tag with ID {request.ID}."
                 });
             }
+
             return Unauthorized("Access denied");
         }
 
@@ -110,9 +112,9 @@ namespace Questy.API.Controllers
         {
             if (IsAdmin)
             {
-                var quest = await repositories.Tags.FindByCondition(x => x.ID == tagId).FirstOrDefaultAsync();
+                var tag = await repositories.Tags.FindByCondition(x => x.ID == tagId).FirstOrDefaultAsync();
 
-                if (quest == null)
+                if (tag == null)
                 {
                     return StatusCode(404, new BaseErrorResponse()
                     {
@@ -121,15 +123,16 @@ namespace Questy.API.Controllers
                     });
                 }
 
-                repositories.Tags.Delete(quest);
+                repositories.Tags.Delete(tag);
                 repositories.Save();
 
                 return NoContent();
             }
+
             return Unauthorized("Access denied");
         }
 
-        [HttpGet("GetAllTags")]
+        [HttpGet("list")]
         public async Task<IActionResult> GetAllTags()
         {
             var tags = await repositories.Tags.FindAll().ToListAsync();
@@ -138,7 +141,7 @@ namespace Questy.API.Controllers
                 return StatusCode(400, new BaseErrorResponse()
                 {
                     Error = true,
-                    Message = "Cannot get any tags from base!"
+                    Message = "There are no tags."
                 });
             }
 
@@ -146,7 +149,7 @@ namespace Questy.API.Controllers
             return Ok(responseDTO);
         }
 
-        [HttpPost("AddQuestTag")]
+        [HttpPost("add-quest-tag")]
         public async Task<IActionResult> AddQuestTag(QuestTagDTO request)
         {
             var exists = await repositories.QuestTags
@@ -155,47 +158,49 @@ namespace Questy.API.Controllers
 
             if (exists == null)
             {
-                var quest = new Domain.Entities.QuestTag
+                var tag = new Domain.Entities.QuestTag
                 {
                     QuestID = request.QuestID,
                     TagID = request.TagID,
-                    AuditUser = userID.ToString(),
+                    AuditUser = UserID.ToString(),
                     LastUpdated = DateTime.Now
                 };
 
-                repositories.QuestTags.Create(quest);
+                repositories.QuestTags.Create(tag);
                 repositories.Save();
 
-                return Created("~/api/tags", quest);
+                return Created("~/api/tags", tag);
             }
+
             return StatusCode(400, new BaseErrorResponse()
             {
                 Error = true,
-                Message = $"Cannot create QuestTag record with quest ID {request.QuestID} and tag ID {request.TagID}."
+                Message = $"QuestTag record with quest ID {request.QuestID} and tag ID {request.TagID} already exists."
             });
         }
 
-        [HttpDelete("DeleteQuestTag/{qtID}")]
-        public async Task<IActionResult> DeleteQuestTag(int qtID)
+        [HttpDelete("delete-quest-tag/{questTagID}")]
+        public async Task<IActionResult> DeleteQuestTag(int questTagID)
         {
             if (IsAdmin)
             {
-                var quest = await repositories.QuestTags.FindByCondition(x => x.ID == qtID).FirstOrDefaultAsync();
+                var tag = await repositories.QuestTags.FindByCondition(x => x.ID == questTagID).FirstOrDefaultAsync();
 
-                if (quest == null)
+                if (tag == null)
                 {
                     return StatusCode(404, new BaseErrorResponse()
                     {
                         Error = true,
-                        Message = $"Cannot find QuestTag record with ID {qtID}."
+                        Message = $"Cannot find QuestTag record with ID {questTagID}."
                     });
                 }
 
-                repositories.QuestTags.Delete(quest);
+                repositories.QuestTags.Delete(tag);
                 repositories.Save();
 
                 return NoContent();
             }
+
             return Unauthorized("Access denied");
         }
     }
