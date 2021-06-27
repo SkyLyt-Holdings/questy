@@ -1,24 +1,13 @@
 ﻿using AutoMapper;
-using MailKit.Net.Smtp;
-using MailKit.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using MimeKit;
-using MimeKit.Text;
-using Questy.Domain.Entities;
-using Questy.Domain.Entities.System;
 using Questy.Infrastructure.DTOs.Quest;
-using Questy.Infrastructure.DTOs.Tag;
 using Questy.Infrastructure.ErrorHandling;
 using Questy.Infrastructure.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Questy.API.Controllers
