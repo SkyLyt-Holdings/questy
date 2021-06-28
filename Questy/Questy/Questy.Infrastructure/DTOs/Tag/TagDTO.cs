@@ -10,6 +10,7 @@ namespace Questy.Infrastructure.DTOs.Tag
     public class TagDTO
     {
         public int? ID { get; set; }
+
         [Required]
         public string Description { get; set; }
     }

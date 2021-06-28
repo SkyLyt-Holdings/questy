@@ -70,8 +70,7 @@ namespace Questy.API.Controllers
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login(UserRequestDTO request)
-        {
-
+        {            
             var user = await repositories.Users.FindByCondition(x => x.Username == request.Username).FirstOrDefaultAsync();
 
             if (user != null)
@@ -84,7 +83,13 @@ namespace Questy.API.Controllers
 
                     var token = jwtManagement.GenerateJwtToken(user, isAdmin);
 
-                    return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+                    var loginResponseDTO = new LoginResponseDTO()
+                    {
+                        Token = new JwtSecurityTokenHandler().WriteToken(token),
+                        Username = user.Username
+                    };
+
+                    return Ok(loginResponseDTO);
                 }
             }
 
