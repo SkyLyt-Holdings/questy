@@ -20,11 +20,13 @@ import { ImStatsDots } from "react-icons/im";
 import { FaExclamation, FaUsersCog } from "react-icons/fa";
 import { GiMagicShield } from "react-icons/gi";
 import { AiFillTags } from "react-icons/ai";
+import LocalStorage from '../helpers/LocalStorage';
 
 const Nav : React.FC = (props) => {
 
     const drawerWidth = 240;
     const theme = useTheme();
+    const username = LocalStorage.getUsername();
     const useStyles = makeStyles((theme) => ({
       root: {
         display: 'flex',
@@ -130,7 +132,7 @@ const Nav : React.FC = (props) => {
             </Grid>
             <Grid item md={11} className={classes.appBarText}>
               <Typography variant="h6" className={classes.headingText} noWrap>
-                Hi, (placeholder for username)
+                Well met, {username}
               </Typography>
             </Grid>
           </Grid>       

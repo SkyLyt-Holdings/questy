@@ -15,6 +15,7 @@ import LoginResponse from "./models/LoginResponse";
 import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { fetchClient } from '../../helpers/fetchClient';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -67,6 +68,7 @@ const Login = () => {
 
     function onLogin(data: LoginResponse) {
         setHasErrors(false);
+        LocalStorage.setUsername(data.username);
         LocalStorage.setToken(data.token);
         history.push('/');
     }
@@ -76,7 +78,9 @@ const Login = () => {
             <Grid item md={4}>
                     <Card variant="outlined">
                         <CardContent className={classes.content}>
-                            <h3 className={classes.header}><strong>Here Be Dragons...</strong></h3>
+                            <Typography className={classes.header} variant="h5">
+                                <strong>Here Be Dragons...</strong>
+                            </Typography>
                             <Grid>
                                 <Grid item md={12}>
                                 <TextField   
