@@ -8,6 +8,7 @@ using Questy.Domain.Entities;
 using Questy.Infrastructure.DTOs.Quest;
 using Questy.Infrastructure.DTOs.User;
 using Questy.Infrastructure.DTOs.Tag;
+using Questy.Infrastructure.DTOs.Archetype;
 
 namespace Questy.Infrastructure.Helpers
 {
@@ -19,6 +20,7 @@ namespace Questy.Infrastructure.Helpers
             .ForMember(d => d.UserType, m => m.MapFrom(s => s.UserType.Description));
             CreateMap<Quest, QuestDTO>().ReverseMap();
             CreateMap<Tag, TagDTO>().ReverseMap();
+            CreateMap<Archetype, ArchetypeDTO>().ReverseMap();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Questy.Infrastructure.Interfaces
         IQuestRepository Quests { get; }
         ITagRepository Tags { get; }
         IQuestTagRepository QuestTags { get; }
-
+        IArchetypeRepository Archetypes { get; }
         void Save();
     }
 }

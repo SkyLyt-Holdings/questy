@@ -16,6 +16,8 @@ namespace Questy.Infrastructure.Repositories
         private IQuestRepository quests;
         private ITagRepository tags;
         private IQuestTagRepository questTags;
+        private IArchetypeRepository archetypes;
+
 
         public RepositoryWrapper(QuestyContext questyContext)
         {
@@ -63,6 +65,15 @@ namespace Questy.Infrastructure.Repositories
             {
                 if (questTags == null) questTags = new QuestTagRepository(QuestyContext);
                 return questTags;
+            }
+        }
+        
+        public IArchetypeRepository Archetypes
+        {
+            get
+            {
+                if (archetypes == null) archetypes = new ArchetypeRepository(QuestyContext);
+                return archetypes;
             }
         }
 
