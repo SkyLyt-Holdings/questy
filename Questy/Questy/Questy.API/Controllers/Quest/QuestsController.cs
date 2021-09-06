@@ -8,6 +8,7 @@ using Questy.Infrastructure.DTOs.Quest;
 using Questy.Infrastructure.ErrorHandling;
 using Questy.Infrastructure.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Questy.API.Controllers
@@ -36,7 +37,7 @@ namespace Questy.API.Controllers
                     Title = request.Title,
                     Description = request.Description,
                     StartDate = request.StartDate == null ? DateTime.Now : Convert.ToDateTime(request.StartDate),
-                    EndDate = Convert.ToDateTime(request.EndDate),
+                    EndDate = request.EndDate == null ? null : Convert.ToDateTime(request.EndDate),
                     AuditUser = UserID.ToString(),
                     LastUpdated = DateTime.Now
                 };
@@ -69,6 +70,16 @@ namespace Questy.API.Controllers
             }
 
             var responseDTO = mapper.Map<QuestDTO>(quest);
+
+            return Ok(responseDTO);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllQuests()
+        {
+            var quests = await repositories.Quests.FindAll().ToListAsync();
+
+            var responseDTO = mapper.Map<List<QuestDTO>>(quests);
 
             return Ok(responseDTO);
         }
