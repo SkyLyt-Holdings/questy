@@ -117,6 +117,10 @@ const Nav : React.FC = (props) => {
       history.push('/login');
     };
 
+    const handleQuests = () => {
+      history.push('/quests');
+    }
+
     return (
       <div className={classes.root}>
         <AppBar
@@ -166,7 +170,7 @@ const Nav : React.FC = (props) => {
                 <ListItemIcon className={classes.white}><ImStatsDots size={25} /></ListItemIcon>
                 <ListItemText primary="Dashboard" className={classes.white}/>
             </ListItem>
-            <ListItem button key="Quests" >
+            <ListItem button key="Quests" onClick={handleQuests}>
                 <ListItemIcon className={classes.white}><FaExclamation size={25} /></ListItemIcon>
                 <ListItemText primary="Quests" className={classes.white}/>
             </ListItem>

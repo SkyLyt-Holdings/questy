@@ -5,6 +5,7 @@ import registerServiceWorker from './registerServiceWorker';
 import Home from '../src/routes/Home/Home';
 import Login from '../src/routes/Home/Login';
 import Nav from './shared/Nav';
+import QuestDashboard from '../src/routes/Quest/QuestDashboard';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Theme from './shared/Theme';
 import { CssBaseline } from '@material-ui/core';
@@ -26,7 +27,10 @@ const App = () => {
                     <Route path='/login'>
                         <Login/>
                     </Route>
-                    <Nav>           
+                    <Nav>
+                        <Route path='/quests'>
+                            <QuestDashboard/>
+                        </Route>           
                         <Route path='/'>
                             <Home />
                         </Route>
