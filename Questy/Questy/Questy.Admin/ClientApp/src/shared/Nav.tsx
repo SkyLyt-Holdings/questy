@@ -21,12 +21,14 @@ import { FaExclamation, FaUsersCog } from "react-icons/fa";
 import { GiMagicShield } from "react-icons/gi";
 import { AiFillTags } from "react-icons/ai";
 import LocalStorage from '../helpers/LocalStorage';
+import { useHistory } from 'react-router';
 
 const Nav : React.FC = (props) => {
 
     const drawerWidth = 240;
     const theme = useTheme();
     const username = LocalStorage.getUsername();
+    const history = useHistory();
     const useStyles = makeStyles((theme) => ({
       root: {
         display: 'flex',
@@ -109,6 +111,12 @@ const Nav : React.FC = (props) => {
     const handleDrawerClose = () => {
       setOpen(false);
     };
+
+    const handleLogout = () => {
+      LocalStorage.clearToken();
+      history.push('/login');
+    };
+
     return (
       <div className={classes.root}>
         <AppBar
@@ -177,7 +185,7 @@ const Nav : React.FC = (props) => {
           </List>
           <Divider className={classes.divider} />
           <List>
-            <ListItem button key="Logout" >
+            <ListItem button key="Logout" onClick={handleLogout} >
                 <ListItemIcon className={classes.white}><CgLogOut size={25} /></ListItemIcon>
                 <ListItemText primary="Logout" className={classes.white}/>
             </ListItem>
