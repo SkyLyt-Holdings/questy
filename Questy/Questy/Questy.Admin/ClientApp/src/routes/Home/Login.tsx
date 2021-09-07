@@ -3,7 +3,7 @@ import LocalStorage from '../../helpers/LocalStorage';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
+import CardContent from '@material-ui/core/CardContelognt';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -67,12 +67,20 @@ const Login = () => {
     }
 
     function onLogin(data: LoginResponse) {
-        setHasErrors(false);
-        LocalStorage.setUsername(data.username);
-        LocalStorage.setToken(data.token);
-        history.push('/');
+        if( data.isAdmin )
+        {
+            setHasErrors(false);
+            LocalStorage.setUsername(data.username);
+            LocalStorage.setToken(data.token);
+            history.push('/');
+        }
+        else
+        {
+            setHasErrors(true);
+            setErrorMessage('You do not have admin permissions to log to this site');
+        }
     }
-
+ 
    return (
         <Grid container direction="row" justify="center" alignItems="center" className={classes.root}> 
             <Grid item md={4}>

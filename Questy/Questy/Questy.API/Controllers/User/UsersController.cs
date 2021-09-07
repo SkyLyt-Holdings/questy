@@ -86,7 +86,8 @@ namespace Questy.API.Controllers
                     var loginResponseDTO = new LoginResponseDTO()
                     {
                         Token = new JwtSecurityTokenHandler().WriteToken(token),
-                        Username = user.Username
+                        Username = user.Username,
+                        IsAdmin = isAdmin
                     };
 
                     return Ok(loginResponseDTO);
