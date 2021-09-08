@@ -67,12 +67,20 @@ const Login = () => {
     }
 
     function onLogin(data: LoginResponse) {
-        setHasErrors(false);
-        LocalStorage.setUsername(data.username);
-        LocalStorage.setToken(data.token);
-        history.push('/');
+        if( data.isAdmin )
+        {
+            setHasErrors(false);
+            LocalStorage.setUsername(data.username);
+            LocalStorage.setToken(data.token);
+            history.push('/');
+        }
+        else
+        {
+            setHasErrors(true);
+            setErrorMessage('You do not have admin permissions to log to this site');
+        }
     }
-
+ 
    return (
         <Grid container direction="row" justify="center" alignItems="center" className={classes.root}> 
             <Grid item md={4}>

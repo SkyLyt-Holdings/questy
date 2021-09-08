@@ -9,7 +9,7 @@ namespace Questy.Infrastructure.DTOs.User
     public class LoginResponseDTO
     {
         public string Token { get; set; }
-
         public string Username { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }
