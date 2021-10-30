@@ -1,7 +1,7 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme  } from '@material-ui/core/styles';
 import forest from '../img/forest.jpg';
 
-const theme = createMuiTheme({
+const theme = createTheme({
     overrides: {
         MuiCssBaseline: {
           '@global': {
