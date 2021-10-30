@@ -3,12 +3,12 @@ import { useHistory } from 'react-router';
 import {Paper, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import LocalStorage from '../../helpers/LocalStorage';
-import { useTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import Loading from '../../shared/Loading';
 
 const Home = () => {
     const history = useHistory();
-    const theme = useTheme();
+    const theme = createTheme();
     const [isLoading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {

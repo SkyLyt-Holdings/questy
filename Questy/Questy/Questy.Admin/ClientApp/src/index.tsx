@@ -31,7 +31,7 @@ const App = () => {
                         <Route path='/quests'>
                             <QuestDashboard/>
                         </Route>           
-                        <Route path='/'>
+                        <Route exact path='/'>
                             <Home />
                         </Route>
                     </Nav>
