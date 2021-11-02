@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Hangfire;
 using Hangfire.SqlServer;
+using Hangfire.Dashboard.BasicAuthorization;
 
 namespace Questy.Queues
 {
@@ -64,14 +65,33 @@ namespace Questy.Queues
             app.UseStaticFiles();
 
             app.UseRouting();
-
+                
             app.UseAuthorization();
+
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] { new BasicAuthAuthorizationFilter(new BasicAuthAuthorizationFilterOptions
+                {
+                    RequireSsl = false,
+                    SslRedirect = false,
+                    LoginCaseSensitive = true,
+                    Users = new[]
+                    {
+                        new BasicAuthAuthorizationUser
+                        {
+                            Login = Configuration["HangfireUser:User"],
+                            PasswordClear = Configuration["HangfireUser:Password"]
+                        }
+                    }
+                })
+            }
+            });
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapHangfireDashboard();
-            });
+            });             
         }
     }
 }
