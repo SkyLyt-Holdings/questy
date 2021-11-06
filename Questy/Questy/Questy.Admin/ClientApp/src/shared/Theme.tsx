@@ -1,14 +1,14 @@
-import { createTheme  } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material/styles';
 import forest from '../img/forest.jpg';
 
 const theme = createTheme({
-    overrides: {
+    components: {
         MuiCssBaseline: {
-          '@global': {
-            body: {
+            styleOverrides: {
+              body: {
                 backgroundImage: `url(${forest})`,
                 backgroundRepeat: "no-repeat"
-            },
+              },
           },
         },
     },

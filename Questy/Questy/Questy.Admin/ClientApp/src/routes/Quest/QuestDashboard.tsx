@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useHistory } from 'react-router';
-import {Paper, Grid, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Paper, Grid, Typography } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import LocalStorage from '../../helpers/LocalStorage';
-import { createTheme } from '@material-ui/core/styles';
 import Loading from '../../shared/Loading';
 import { fetchClient } from '../../helpers/fetchClient';
 import logger from '../../helpers/logger';
@@ -38,7 +38,7 @@ const QuestDashboard = () => {
         if(token === null && window.location) history.push("/login");
     }, [])
 
-    const useStyles = makeStyles((theme) => ({
+    const   useStyles = makeStyles((theme) => ({
         root: {
           flexGrow: 1,
         },
@@ -71,8 +71,8 @@ return (
                         <Loading fullscreen={true} message={"Loading dashboard, please wait..."}/>
                       </Paper>}
                       {!isLoading && <div>
-                        <MaterialTable
-                  		    title='Active Quests'
+                    <MaterialTable
+                          title='Active Quests'
                           icons={materialTableIcons}
                           data={dataSource}
                           columns={columns}      

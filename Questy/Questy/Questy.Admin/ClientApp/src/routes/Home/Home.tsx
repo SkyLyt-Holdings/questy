@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useHistory } from 'react-router';
-import {Paper, Grid, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Paper, Grid, Typography } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import LocalStorage from '../../helpers/LocalStorage';
-import { createTheme } from '@material-ui/core/styles';
 import Loading from '../../shared/Loading';
 
 const Home = () => {

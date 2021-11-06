@@ -1,21 +1,21 @@
 import * as React from 'react';
 import LocalStorage from '../../helpers/LocalStorage';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import makeStyles from '@mui/styles/makeStyles';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import InputAdornment from '@mui/material/InputAdornment';
 import {FaHatWizard} from 'react-icons/fa'
 import {FiKey} from 'react-icons/fi';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import LoginRequest from './models/LoginRequest';
 import LoginResponse from "./models/LoginResponse";
 import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { fetchClient } from '../../helpers/fetchClient';
-import { Typography } from '@material-ui/core';
+import Typography from '@mui/material/Typography';
 
 const useStyles = makeStyles((theme) => ({
     root: {
