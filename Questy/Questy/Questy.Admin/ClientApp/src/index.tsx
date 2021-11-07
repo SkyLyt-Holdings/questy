@@ -1,17 +1,17 @@
 import 'bootstrap/dist/css/bootstrap.css';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 import Home from '../src/routes/Home/Home';
 import Login from '../src/routes/Home/Login';
 import Nav from './shared/Nav';
 import QuestDashboard from '../src/routes/Quest/QuestDashboard';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import Theme from './shared/Theme';
-import { CssBaseline } from '@material-ui/core';
+import CssBaseline from '@mui/material/CssBaseline';
 import {
     BrowserRouter as Router,
-    Switch,
+    Routes,
     Route
 } from 'react-router-dom'
 
@@ -22,21 +22,15 @@ const App = () => {
     return(        
         <ThemeProvider theme={Theme}>
             <CssBaseline />
-            <Router basename={baseUrl !== null ? baseUrl : ''}>
-                <Switch>
-                    <Route path='/login'>
-                        <Login/>
-                    </Route>
-                    <Nav>
-                        <Route path='/quests'>
-                            <QuestDashboard/>
-                        </Route>           
-                        <Route exact path='/'>
-                            <Home />
+                <Router basename={baseUrl !== null ? baseUrl : ''}>
+                    <Routes>
+                        <Route path='login' element={<Login/>} />
+                        <Route element={<Nav/>}>
+                            <Route path='/' element={<Home/>}/>
+                            <Route path='/quests' element={<QuestDashboard/>} />                           
                         </Route>
-                    </Nav>
-                </Switch>
-            </Router>
+                    </Routes>
+                </Router>
         </ThemeProvider>
     )
 }

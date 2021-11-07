@@ -1,23 +1,24 @@
 import * as React from 'react';
 import LocalStorage from '../../helpers/LocalStorage';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import makeStyles from '@mui/styles/makeStyles';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import InputAdornment from '@mui/material/InputAdornment';
 import {FaHatWizard} from 'react-icons/fa'
 import {FiKey} from 'react-icons/fi';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import LoginRequest from './models/LoginRequest';
 import LoginResponse from "./models/LoginResponse";
 import { useState } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import { fetchClient } from '../../helpers/fetchClient';
-import { Typography } from '@material-ui/core';
+import Typography from '@mui/material/Typography';
+import { Theme } from '@mui/material/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme:Theme) => ({
     root: {
         marginTop: "15em"
     },
@@ -25,16 +26,16 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center'
     },
     header : {
-        margin: 20
+        margin: "20px"
     },
     button: {
-        margin: 5
+        margin: "5px"
     }
   }));
 
 const Login = () => {
 
-    const history = useHistory();
+    const navigation = useNavigate();
     const classes = useStyles();
     const [loginForm, setLoginForm] = useState<LoginRequest>({
         username: '',
@@ -58,12 +59,14 @@ const Login = () => {
     }
 
     function handleSubmit() {
-      if (!loginForm.username || !loginForm.password) {
-          setHasErrors(true);
-          setErrorMessage('Please enter a valid username and password');
-      }
-
-      fetchClient.post({endpoint: '/users/login', callback: onLogin, data: loginForm, onError:  onErrorResponse});
+        setHasErrors(false);
+        if (!loginForm.username || !loginForm.password) {
+            setHasErrors(true);
+            setErrorMessage('Please enter a valid username and password');
+        }
+        else {
+            fetchClient.post({endpoint: '/users/login', callback: onLogin, data: loginForm, onError:  onErrorResponse});
+        }
     }
 
     function onLogin(data: LoginResponse) {
@@ -72,7 +75,7 @@ const Login = () => {
             setHasErrors(false);
             LocalStorage.setUsername(data.username);
             LocalStorage.setToken(data.token);
-            history.push('/');
+            navigation('/');
         }
         else
         {
@@ -82,7 +85,8 @@ const Login = () => {
     }
  
    return (
-        <Grid container direction="row" justify="center" alignItems="center" className={classes.root}> 
+        <Grid container className={classes.root}>
+            <Grid item md={4}></Grid> 
             <Grid item md={4}>
                     <Card variant="outlined">
                         <CardContent className={classes.content}>
@@ -94,6 +98,7 @@ const Login = () => {
                                 <TextField   
                                     className={classes.header}  
                                     name="username"
+                                    error={hasErrors}
                                     onChange={handleInputChange}                             
                                     InputProps={{
                                     startAdornment: (
@@ -109,6 +114,7 @@ const Login = () => {
                                     className={classes.header}
                                     name="password"
                                     type="password"
+                                    error={hasErrors}
                                     onChange={handleInputChange}                                                        
                                     InputProps={{
                                     startAdornment: (
@@ -134,6 +140,7 @@ const Login = () => {
                         </CardActions>
                     </Card>
             </Grid>
+            <Grid item md={4}></Grid> 
        </Grid>
    )
 }

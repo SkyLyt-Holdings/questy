@@ -1,28 +1,30 @@
 import * as React from 'react';
-import { useHistory } from 'react-router';
-import {Paper, Grid, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { useNavigate } from 'react-router';
+import { Paper, Grid, Typography } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
+import { Theme } from '@mui/material/styles';
 import LocalStorage from '../../helpers/LocalStorage';
-import { createTheme } from '@material-ui/core/styles';
 import Loading from '../../shared/Loading';
 import { fetchClient } from '../../helpers/fetchClient';
 import logger from '../../helpers/logger';
-import MaterialTable from 'material-table';
+import MaterialTable, { Column } from "@material-table/core";
 import materialTableIcons from '../../shared/MaterialTableIcons';
+import IQuestDashboard from '../Quest/models/IQuestDashboard';
 
 const QuestDashboard = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const theme = createTheme();
     const [isLoading, setIsLoading] = React.useState(true);
-    const [dataSource, setDataSource] = React.useState([]);
+    const [dataSource, setDataSource] = React.useState<Array<IQuestDashboard>>([]);
    
-    const columns = [
+    const columns: Array<Column<IQuestDashboard>> = [
         { field: 'id', title: 'ID', type: 'numeric', width: 10 },
         { field: 'title', title: 'Title'},
         { field: 'description', title: 'Description' },
         { field: 'startDate', title: 'Start Date'},
         { field: 'endDate', title: 'End Date' }
-    ] as any;
+    ];
 
     const options = {
         filtering: true,
@@ -35,17 +37,16 @@ const QuestDashboard = () => {
     React.useEffect(() => {
         getData();
         const token = LocalStorage.getToken();
-        if(token === null && window.location) history.push("/login");
+        if(token === null && window.location) navigate("/login");
     }, [])
 
-    const useStyles = makeStyles((theme) => ({
-        root: {
-          flexGrow: 1,
-        },
+    const useStyles = makeStyles((theme: Theme) => ({
         paper: {
           padding: theme.spacing(2),
           textAlign: 'center',
-          height: 900
+          height: 600,
+          marginTop: 80,
+          margin: 20
         }
       })); 
 
@@ -55,7 +56,7 @@ const QuestDashboard = () => {
         fetchClient.get({endpoint: '/quests', callback: onDataGet});
       }
 
-      function onDataGet(data: []) {        
+      function onDataGet(data: Array<IQuestDashboard>) {        
         setDataSource(data);
         setIsLoading(false);
         logger.log(data);
@@ -68,18 +69,20 @@ return (
               <Grid item xs={12}>
                       {isLoading && 
                       <Paper className={classes.paper}>
-                        <Loading fullscreen={true} message={"Loading dashboard, please wait..."}/>
+                        <Loading fullscreen={true} message={"Loading quests, please wait..."}/>
                       </Paper>}
                       {!isLoading && <div>
+                        <Paper className={classes.paper}>
                         <MaterialTable
-                  		    title='Active Quests'
+                          title='Active Quests'
                           icons={materialTableIcons}
                           data={dataSource}
                           columns={columns}      
                           options={options}
                           style={gridStyle}						  
                         />
-                        </div>}
+                      </Paper>
+                      </div>}
                 </Grid>
           </Grid>
     </div>
