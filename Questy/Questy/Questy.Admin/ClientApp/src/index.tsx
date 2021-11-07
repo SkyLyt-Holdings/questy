@@ -11,7 +11,7 @@ import Theme from './shared/Theme';
 import CssBaseline from '@mui/material/CssBaseline';
 import {
     BrowserRouter as Router,
-    Switch,
+    Routes,
     Route
 } from 'react-router-dom'
 
@@ -22,21 +22,15 @@ const App = () => {
     return(        
         <ThemeProvider theme={Theme}>
             <CssBaseline />
-            <Router basename={baseUrl !== null ? baseUrl : ''}>
-                <Switch>
-                    <Route path='/login'>
-                        <Login/>
-                    </Route>
-                    <Nav>
-                        <Route path='/quests'>
-                            <QuestDashboard/>
-                        </Route>           
-                        <Route exact path='/'>
-                            <Home />
+                <Router basename={baseUrl !== null ? baseUrl : ''}>
+                    <Routes>
+                        <Route path='login' element={<Login/>} />
+                        <Route element={<Nav/>}>
+                            <Route path='/' element={<Home/>}/>
+                            <Route path='/quests' element={<QuestDashboard/>} />                           
                         </Route>
-                    </Nav>
-                </Switch>
-            </Router>
+                    </Routes>
+                </Router>
         </ThemeProvider>
     )
 }

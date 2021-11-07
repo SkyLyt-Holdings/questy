@@ -9,8 +9,17 @@ const theme = createTheme({
                 backgroundImage: `url(${forest})`,
                 backgroundRepeat: "no-repeat"
               },
-          },
+          }
         },
+        MuiButton: {
+            styleOverrides: {
+              // Name of the slot
+              root: {
+                // Some CSS
+                margin: 5,
+              },
+            },
+          },
     },
     palette: {
         primary: {
