@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { createTheme } from '@mui/material/styles';
 import makeStyles from '@mui/styles/makeStyles';
-import {Paper, Grid, Typography, TextField } from '@mui/material';
+import {Paper, Grid, Typography, TextField, Button } from '@mui/material';
 import Theme from '../../shared/Theme';
 import IQuest from '../Quest/models/IQuest';
 import DateTimePicker from '@mui/lab/DateTimePicker';
+import { fetchClient } from '../../helpers/fetchClient';
+import { useNavigate } from 'react-router';
 
 const Quest = () => {
     const theme = createTheme();
+    const navigate = useNavigate();
     const data = {
         id: null,
         title: "",
@@ -27,6 +30,24 @@ const Quest = () => {
           }
       })); 
     const classes = useStyles();
+
+    const updateQuestObject = (key : any, value : any) => {
+        // Destructure current state object
+        const newQuest = {
+          ...quest,
+          [key]: value,
+        };
+        setQuest(newQuest);
+      };
+
+      const handleSubmit = () => {         
+        fetchClient.post({endpoint: '/quests', data: quest, callback: onSave});
+      }
+
+      const onSave = () => {
+           navigate("/quests");
+      }
+
 return (   
     <Paper className={classes.paper}>
         <Grid container spacing={3}> 
@@ -37,7 +58,6 @@ return (
             </Grid>    
             <Grid item xs={12}>
                 <TextField
-                    InputLabelProps={{style : {color : theme.palette.secondary.main} }}
                     required
                     id="txtQuestTitle"
                     label="Quest Title"
@@ -45,12 +65,14 @@ return (
                     fullWidth
                     size="small"
                     variant="outlined"
+                    onChange={(newValue) => {
+                        updateQuestObject("title", newValue.target.value); 
+                     }}
                     />
             </Grid>
             <Grid item xs={12}>
                 <TextField
                 id="txtQuestDescription"
-                InputLabelProps={{style : {color : theme.palette.secondary.main} }}
                 label="Quest Description"
                 multiline
                 required
@@ -59,19 +81,50 @@ return (
                 defaultValue={quest.description}
                 size="small"
                 variant="outlined"
+                onChange={(newValue) => {
+                    updateQuestObject("description", newValue.target.value); 
+                 }}
                 />
             </Grid>
             <Grid item xs={6}>
-            <DateTimePicker
-                renderInput={(props) => <TextField {...props} />}
-                label="DateTimePicker"
-                value={quest.startDate}
-                // onChange={(newValue) => {
-                // setQuest(...quest, startDate: newValue);
-                // }}
-            />
+                <Grid container>
+                    <Grid item xs={2}>
+                        <Typography variant="body1" gutterBottom>
+                            Start Date:
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={10}>
+                        <DateTimePicker
+                        renderInput={(props) => <TextField {...props} />}
+                        value={quest.startDate}
+                        onChange={(newValue) => {
+                        updateQuestObject("startDate", newValue); 
+                        }}
+                    />
+                    </Grid>
+                </Grid>
             </Grid>
             <Grid item xs={6}>
+                <Grid container>
+                    <Grid item xs={2}>
+                        <Typography variant="body1" gutterBottom>
+                            End Date:
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={10}>
+                        <DateTimePicker
+                        renderInput={(props) => <TextField {...props} />}
+                        value={quest.endDate}
+                        onChange={(newValue) => {
+                        updateQuestObject("endDate", newValue); 
+                        }}
+                    />
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={12} className="mt-3" sx={{display: "flex", justifyContent: "flex-end"}}>
+                <Button variant="contained" color="error">Cancel</Button>
+                <Button variant="contained" color="secondary" onClick={handleSubmit}>Save</Button>
             </Grid>
         </Grid>
     </Paper>
