@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router';
-import { Paper, Grid, Typography } from '@mui/material';
+import { Paper, Grid, Typography, Button } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import makeStyles from '@mui/styles/makeStyles';
 import { Theme } from '@mui/material/styles';
@@ -11,6 +11,8 @@ import logger from '../../helpers/logger';
 import MaterialTable, { Column } from "@material-table/core";
 import materialTableIcons from '../../shared/MaterialTableIcons';
 import IQuestDashboard from '../Quest/models/IQuestDashboard';
+import { FiEdit } from 'react-icons/fi';
+import { RiDeleteBin2Line } from 'react-icons/ri';
 
 const QuestDashboard = () => {
     const navigate = useNavigate();
@@ -29,25 +31,29 @@ const QuestDashboard = () => {
     const options = {
         filtering: true,
         search: true,
-		    sorting: true
+		    sorting: true,
+        actionsColumnIndex: -1
     }
 
     const gridStyle = { minHeight: 550 }
 	
     React.useEffect(() => {
         getData();
-        const token = LocalStorage.getToken();
-        if(token === null && window.location) navigate("/login");
     }, [])
 
     const useStyles = makeStyles((theme: Theme) => ({
         paper: {
           padding: theme.spacing(2),
           textAlign: 'center',
-          height: 600,
+          height: 650,
           marginTop: 80,
           margin: 20
-        }
+        },
+        buttonDiv: {
+            display: "flex",
+            justifyContent: "end",
+            marginBottom: 15
+          }
       })); 
 
       const classes = useStyles();
@@ -73,13 +79,29 @@ return (
                       </Paper>}
                       {!isLoading && <div>
                         <Paper className={classes.paper}>
+                        <div className={classes.buttonDiv}>
+                          <Button onClick={() => navigate("/quest")} variant="contained" color="secondary">Create New Quest</Button>
+                        </div>
                         <MaterialTable
                           title='Active Quests'
                           icons={materialTableIcons}
                           data={dataSource}
                           columns={columns}      
                           options={options}
-                          style={gridStyle}						  
+                          style={gridStyle}
+                          actions={[
+                            {
+                              icon: () => <FiEdit/>,
+                              tooltip: 'Edit Quest',
+                              // @ts-ignore
+                              onClick: (event, rowData) => history.push("/quest/" + rowData.id)
+                            },
+                            {
+                              icon: () => <RiDeleteBin2Line/>,
+                              tooltip: 'Delete Quest',
+                              onClick: (event, rowData) => alert("You want to delete ")
+                            }
+                          ]}								  
                         />
                       </Paper>
                       </div>}

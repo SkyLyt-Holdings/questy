@@ -17,26 +17,12 @@ import { useNavigate } from 'react-router';
 import { fetchClient } from '../../helpers/fetchClient';
 import Typography from '@mui/material/Typography';
 import { Theme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
-const useStyles = makeStyles((theme:Theme) => ({
-    root: {
-        marginTop: "15em"
-    },
-    content : {
-        textAlign: 'center'
-    },
-    header : {
-        margin: "20px"
-    },
-    button: {
-        margin: "5px"
-    }
-  }));
 
 const Login = () => {
-
+    const theme = createTheme();
     const navigation = useNavigate();
-    const classes = useStyles();
     const [loginForm, setLoginForm] = useState<LoginRequest>({
         username: '',
         password: ''
@@ -44,6 +30,24 @@ const Login = () => {
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [hasErrors, setHasErrors] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
+
+    const useStyles = makeStyles((theme:Theme) => ({
+        root: {
+            marginTop: "15em"
+        },
+        content : {
+            textAlign: 'center'
+        },
+        header : {
+            margin: "20px"
+        },
+        button: {
+            margin: "5px"
+        }
+      }));
+    
+      const classes = useStyles();
+
 
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         setLoginForm({
