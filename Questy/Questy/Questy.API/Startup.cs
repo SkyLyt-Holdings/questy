@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,8 @@ using Questy.Domain.Entities;
 using Questy.Infrastructure.Interfaces;
 using Questy.Infrastructure.Repositories;
 using Questy.Infrastructure.Services;
+using AutoMapper;
+using Questy.Infrastructure.Helpers;
 
 namespace Questy.API
 {
@@ -60,10 +63,32 @@ namespace Questy.API
                 };
             });
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
+             
+            services.AddAutoMapper(typeof(Startup));
+
+            var mappingConfig = new MapperConfiguration(x =>
+            {
+                x.AddProfile(new MappingHelper());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+
+            services.AddSingleton(mapper);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "Questy",
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("https://localhost:44332").AllowAnyHeader().AllowAnyMethod();
+                                  });
             });
         }
 
@@ -93,6 +118,8 @@ namespace Questy.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("Questy");
 
             app.UseAuthorization();
 

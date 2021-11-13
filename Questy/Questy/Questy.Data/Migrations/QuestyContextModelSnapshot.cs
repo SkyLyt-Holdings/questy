@@ -265,6 +265,9 @@ namespace Questy.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
 
@@ -277,9 +280,6 @@ namespace Questy.Data.Migrations
 
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isActive")
-                        .HasColumnType("bit");
 
                     b.HasKey("ID");
 
@@ -311,17 +311,12 @@ namespace Questy.Data.Migrations
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("WeightID")
-                        .HasColumnType("int");
-
                     b.Property<int>("WeightPercentage")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
                     b.HasIndex("ArchetypeID");
-
-                    b.HasIndex("WeightID");
 
                     b.ToTable("UserBuilds");
                 });
@@ -378,34 +373,6 @@ namespace Questy.Data.Migrations
                     b.ToTable("UserTypePermission");
                 });
 
-            modelBuilder.Entity("Questy.Domain.Entities.Weight", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AuditUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PrimaryPercentage")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SecondaryPercentage")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TertiaryPercentage")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Weights");
-                });
-
             modelBuilder.Entity("Questy.Domain.Entities.ArchetypeTag", b =>
                 {
                     b.HasOne("Questy.Domain.Entities.Archetype", "Archetype")
@@ -446,7 +413,7 @@ namespace Questy.Data.Migrations
 
             modelBuilder.Entity("Questy.Domain.Entities.QuestTag", b =>
                 {
-                    b.HasOne("Questy.Domain.Entities.Quest", "Archetype")
+                    b.HasOne("Questy.Domain.Entities.Quest", "Quest")
                         .WithMany("Tags")
                         .HasForeignKey("QuestID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -458,7 +425,7 @@ namespace Questy.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Archetype");
+                    b.Navigation("Quest");
 
                     b.Navigation("Tag");
                 });
@@ -482,13 +449,7 @@ namespace Questy.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Questy.Domain.Entities.Weight", "Weight")
-                        .WithMany()
-                        .HasForeignKey("WeightID");
-
                     b.Navigation("Archetype");
-
-                    b.Navigation("Weight");
                 });
 
             modelBuilder.Entity("Questy.Domain.Entities.UserTypePermission", b =>

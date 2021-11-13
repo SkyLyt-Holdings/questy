@@ -22,7 +22,6 @@ namespace Questy.Data
         public DbSet<UserType> UserTypes { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Archetype> Archetypes { get; set; }
-        public DbSet<Weight> Weights { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<UserBuild> UserBuilds { get; set; }
         public DbSet<Quest> Quests { get; set; }
