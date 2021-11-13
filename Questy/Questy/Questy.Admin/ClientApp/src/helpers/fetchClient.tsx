@@ -17,7 +17,7 @@ export interface fetchDataRequest extends fetchRequest {
     data?: any
 }
 
-const baseUrl = "http://localhost:55795/api";
+const baseUrl = "https://localhost:44318/api";
 const OK = 200;
 const CREATED_AT = 201;
 const NO_CONTENT = 204;

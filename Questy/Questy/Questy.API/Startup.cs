@@ -87,7 +87,7 @@ namespace Questy.API
                 options.AddPolicy(name: "Questy",
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:55806").AllowAnyHeader().AllowAnyMethod();
+                                      builder.WithOrigins("https://localhost:44332").AllowAnyHeader().AllowAnyMethod();
                                   });
             });
         }
@@ -119,9 +119,9 @@ namespace Questy.API
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseCors("Questy");
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

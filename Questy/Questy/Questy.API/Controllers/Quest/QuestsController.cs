@@ -45,7 +45,7 @@ namespace Questy.API.Controllers
                 repositories.Quests.Create(quest);
                 repositories.Save();
 
-                return Created("~/api/quests", quest.Title);
+                return Created("~/api/quests", new { messsage = "success" });
             }
 
             return StatusCode(400, new BaseErrorResponse()
